@@ -1,0 +1,27 @@
+# Configuración sensible
+.env
+config/database.php
+
+# Dependencias
+vendor/
+
+# Logs
+*.log
+logs/
+
+# Cache
+cache/
+*.cache
+
+# Sistema operativo
+.DS_Store
+Thumbs.db
+
+# IDEs
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Uploads de usuarios (se manejan en el servidor)
+public/uploads/
