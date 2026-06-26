@@ -74,5 +74,7 @@
 </footer>
 
 <script src="/assets/js/main.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/js/twemoji.min.js" crossorigin="anonymous"></script>
+<script>twemoji.parse(document.body, { folder: 'svg', ext: '.svg' });</script>
 </body>
 </html>

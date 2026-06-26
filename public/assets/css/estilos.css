@@ -33,6 +33,14 @@
 /* =========================================
    RESET Y BASE
    ========================================= */
+
+/* Twemoji — emojis consistentes en todos los dispositivos */
+img.emoji {
+    height: 1.2em;
+    width: 1.2em;
+    vertical-align: -0.2em;
+    display: inline-block;
+}
 *, *::before, *::after {
     box-sizing: border-box;
     margin: 0;
