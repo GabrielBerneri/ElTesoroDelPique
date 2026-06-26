@@ -146,18 +146,44 @@ ul {
 .logo {
     display: flex;
     align-items: center;
+    gap: 14px;
 }
 
 .logo-imagen {
-    height: 56px;
+    height: 68px;
     width: auto;
     object-fit: contain;
     filter: drop-shadow(0 2px 6px rgba(0,0,0,0.5));
     transition: transform var(--transicion);
+    flex-shrink: 0;
 }
 
 .logo:hover .logo-imagen {
     transform: scale(1.04);
+}
+
+.logo-texto {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.2;
+}
+
+.logo-nombre {
+    font-family: var(--fuente-titulo);
+    font-size: 22px;
+    font-weight: 400;
+    color: var(--color-acento);
+    letter-spacing: 0.5px;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.6);
+}
+
+.logo-tagline {
+    font-size: 11px;
+    color: var(--color-pergamino);
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    opacity: 0.65;
 }
 
 /* Navegación */

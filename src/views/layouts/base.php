@@ -14,6 +14,10 @@
 
         <a href="/" class="logo">
             <img src="/assets/image/logo.jpeg" alt="El Tesoro del Pique" class="logo-imagen">
+            <div class="logo-texto">
+                <span class="logo-nombre">El Tesoro del Pique</span>
+                <span class="logo-tagline">Todo para tu próxima salida</span>
+            </div>
         </a>
 
         <nav class="nav">
