@@ -13,8 +13,7 @@
     <div class="header-inner">
 
         <a href="/" class="logo">
-            <span class="logo-nombre">El Tesoro del Pique</span>
-            <span class="logo-tagline">Todo para la pesca</span>
+            <img src="/assets/image/logo.jpeg" alt="El Tesoro del Pique" class="logo-imagen">
         </a>
 
         <nav class="nav">
@@ -44,7 +43,7 @@
 <footer class="footer">
     <div class="footer-grid">
         <div class="footer-brand">
-            <span class="logo-nombre">El Tesoro del Pique</span>
+            <img src="/assets/image/logo.jpeg" alt="El Tesoro del Pique" class="footer-logo">
             <p>Tu tienda de pesca de confianza en Argentina. Encontrá todo lo que necesitás para tu próxima salida de pesca.</p>
         </div>
         <div class="footer-col">

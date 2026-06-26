@@ -145,26 +145,19 @@ ul {
 /* Logo */
 .logo {
     display: flex;
-    flex-direction: column;
-    line-height: 1.1;
+    align-items: center;
 }
 
-.logo-nombre {
-    font-family: var(--fuente-titulo);
-    font-size: 24px;
-    font-weight: 400;
-    color: var(--color-acento);
-    letter-spacing: 1px;
-    text-shadow: 0 2px 8px rgba(0,0,0,0.5);
+.logo-imagen {
+    height: 56px;
+    width: auto;
+    object-fit: contain;
+    filter: drop-shadow(0 2px 6px rgba(0,0,0,0.5));
+    transition: transform var(--transicion);
 }
 
-.logo-tagline {
-    font-size: 10px;
-    color: var(--color-pergamino);
-    font-weight: 700;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    opacity: 0.7;
+.logo:hover .logo-imagen {
+    transform: scale(1.04);
 }
 
 /* Navegación */
@@ -543,10 +536,11 @@ ul {
     margin: 0 auto 40px;
 }
 
-.footer-brand .logo-nombre {
-    font-size: 22px;
-    margin-bottom: 12px;
-    display: block;
+.footer-logo {
+    height: 80px;
+    width: auto;
+    margin-bottom: 16px;
+    filter: drop-shadow(0 2px 8px rgba(0,0,0,0.6));
 }
 
 .footer-brand p {
