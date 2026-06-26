@@ -2,18 +2,25 @@
    VARIABLES GLOBALES
    Cambiar estos valores modifica todo el sitio
    ========================================= */
-:root {
-    --color-primario:    #0b2545;   /* azul marino oscuro */
-    --color-secundario:  #1e5f8e;   /* azul medio */
-    --color-acento:      #e8a020;   /* naranja dorado */
-    --color-acento-dark: #c4861a;   /* acento más oscuro (hover) */
-    --color-fondo:       #f5f7fa;   /* gris muy claro */
-    --color-blanco:      #ffffff;
-    --color-texto:       #1a1a2e;   /* casi negro */
-    --color-texto-suave: #5a6a7a;   /* gris para textos secundarios */
-    --color-borde:       #dde3ea;
 
-    --fuente-principal: 'Segoe UI', system-ui, -apple-system, sans-serif;
+/* Fuentes de Google — Pirata One para títulos, Lato para cuerpo */
+@import url('https://fonts.googleapis.com/css2?family=Pirata+One&family=Cinzel:wght@700;900&family=Lato:wght@400;700&display=swap');
+
+:root {
+    --color-primario:    #0d0d0d;   /* negro profundo (fondo del logo) */
+    --color-secundario:  #3D1C02;   /* marrón madera (cofre del logo) */
+    --color-acento:      #C8960C;   /* dorado (monedas del logo) */
+    --color-acento-dark: #A87A0A;   /* dorado oscuro (hover) */
+    --color-pergamino:   #F5E6C8;   /* crema pergamino (texto del logo) */
+    --color-fondo:       #FAF6EE;   /* fondo general cálido */
+    --color-blanco:      #ffffff;
+    --color-texto:       #1a0f00;   /* marrón muy oscuro para texto */
+    --color-texto-suave: #7a6a55;   /* marrón suave para secundarios */
+    --color-borde:       #e8d9c0;
+
+    --fuente-titulo:    'Pirata One', cursive;
+    --fuente-subtitulo: 'Cinzel', serif;
+    --fuente-principal: 'Lato', system-ui, sans-serif;
 
     --sombra-suave: 0 2px 8px rgba(0, 0, 0, 0.08);
     --sombra-media: 0 4px 16px rgba(0, 0, 0, 0.12);
@@ -102,8 +109,9 @@ ul {
 }
 
 .seccion-titulo {
+    font-family: var(--fuente-subtitulo);
     font-size: 26px;
-    font-weight: 700;
+    font-weight: 900;
     color: var(--color-primario);
     margin-bottom: 8px;
 }
@@ -142,18 +150,21 @@ ul {
 }
 
 .logo-nombre {
-    font-size: 20px;
-    font-weight: 800;
-    color: var(--color-blanco);
-    letter-spacing: -0.3px;
+    font-family: var(--fuente-titulo);
+    font-size: 24px;
+    font-weight: 400;
+    color: var(--color-acento);
+    letter-spacing: 1px;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.5);
 }
 
 .logo-tagline {
-    font-size: 11px;
-    color: var(--color-acento);
-    font-weight: 500;
-    letter-spacing: 1px;
+    font-size: 10px;
+    color: var(--color-pergamino);
+    font-weight: 700;
+    letter-spacing: 2px;
     text-transform: uppercase;
+    opacity: 0.7;
 }
 
 /* Navegación */
@@ -222,11 +233,12 @@ ul {
    HERO (banner principal)
    ========================================= */
 .hero {
-    background: linear-gradient(135deg, var(--color-primario) 0%, var(--color-secundario) 100%);
-    padding: 80px 20px;
+    background: linear-gradient(160deg, #0d0d0d 0%, #1a0a00 50%, #3D1C02 100%);
+    padding: 90px 20px;
     text-align: center;
     position: relative;
     overflow: hidden;
+    border-bottom: 3px solid var(--color-acento);
 }
 
 .hero::before {
@@ -234,41 +246,59 @@ ul {
     position: absolute;
     inset: 0;
     background: url('/assets/images/hero-bg.jpg') center/cover no-repeat;
-    opacity: 0.15;
+    opacity: 0.08;
+}
+
+/* Efecto de brillo dorado en el hero */
+.hero::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(200,150,12,0.12) 0%, transparent 70%);
+    pointer-events: none;
 }
 
 .hero-contenido {
     position: relative;
     z-index: 1;
-    max-width: 600px;
+    max-width: 640px;
     margin: 0 auto;
 }
 
 .hero-eyebrow {
-    font-size: 13px;
-    font-weight: 600;
+    font-family: var(--fuente-subtitulo);
+    font-size: 12px;
+    font-weight: 700;
     color: var(--color-acento);
-    letter-spacing: 2px;
+    letter-spacing: 4px;
     text-transform: uppercase;
-    margin-bottom: 16px;
+    margin-bottom: 20px;
+    opacity: 0.9;
 }
 
 .hero-titulo {
-    font-size: clamp(32px, 5vw, 52px);
-    font-weight: 800;
-    color: var(--color-blanco);
-    line-height: 1.15;
+    font-family: var(--fuente-titulo);
+    font-size: clamp(40px, 6vw, 68px);
+    font-weight: 400;
+    color: var(--color-pergamino);
+    line-height: 1.1;
     margin-bottom: 20px;
+    text-shadow: 0 4px 20px rgba(0,0,0,0.6);
 }
 
 .hero-titulo span {
     color: var(--color-acento);
+    text-shadow: 0 0 30px rgba(200,150,12,0.4);
 }
 
 .hero-descripcion {
     font-size: 17px;
-    color: rgba(255,255,255,0.8);
-    margin-bottom: 36px;
+    color: rgba(245,230,200,0.75);
+    margin-bottom: 40px;
     line-height: 1.7;
 }
 
@@ -285,6 +315,7 @@ ul {
 .seccion-categorias {
     padding: 60px 20px;
     background-color: var(--color-blanco);
+    border-bottom: 1px solid var(--color-borde);
 }
 
 .categorias-grid {
@@ -310,7 +341,7 @@ ul {
 .categoria-card:hover {
     border-color: var(--color-acento);
     background-color: var(--color-blanco);
-    box-shadow: var(--sombra-media);
+    box-shadow: 0 4px 16px rgba(200,150,12,0.15);
     transform: translateY(-3px);
 }
 
@@ -474,21 +505,24 @@ ul {
    BANNER SECUNDARIO
    ========================================= */
 .banner-secundario {
-    background: linear-gradient(135deg, #1a3a2a 0%, #2d6a4f 100%);
+    background: linear-gradient(160deg, #0d0d0d 0%, #1a0a00 100%);
+    border-top: 2px solid var(--color-acento);
+    border-bottom: 2px solid var(--color-acento);
     padding: 60px 20px;
     text-align: center;
 }
 
 .banner-secundario h2 {
-    font-size: 30px;
-    font-weight: 800;
-    color: var(--color-blanco);
+    font-family: var(--fuente-subtitulo);
+    font-size: 28px;
+    font-weight: 900;
+    color: var(--color-pergamino);
     margin-bottom: 12px;
 }
 
 .banner-secundario p {
     font-size: 16px;
-    color: rgba(255,255,255,0.8);
+    color: rgba(245,230,200,0.7);
     margin-bottom: 28px;
 }
 
