@@ -298,10 +298,10 @@ ul {
 
 .hero-eyebrow {
     font-family: var(--fuente-subtitulo);
-    font-size: 12px;
+    font-size: 16px;
     font-weight: 700;
     color: var(--color-acento);
-    letter-spacing: 4px;
+    letter-spacing: 3px;
     text-transform: uppercase;
     margin-bottom: 20px;
     opacity: 0.9;
