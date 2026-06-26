@@ -36,17 +36,17 @@
                 <span class="categoria-cantidad">Ver productos</span>
             </a>
             <a href="/categorias/reels" class="categoria-card">
-                <span class="categoria-icono">🔄</span>
+                <span class="categoria-icono">⚙️</span>
                 <span class="categoria-nombre">Reels</span>
                 <span class="categoria-cantidad">Ver productos</span>
             </a>
             <a href="/categorias/senuelos" class="categoria-card">
-                <span class="categoria-icono">🐟</span>
+                <span class="categoria-icono">🦈</span>
                 <span class="categoria-nombre">Señuelos</span>
                 <span class="categoria-cantidad">Ver productos</span>
             </a>
             <a href="/categorias/lineas" class="categoria-card">
-                <span class="categoria-icono">〰️</span>
+                <span class="categoria-icono">🪢</span>
                 <span class="categoria-nombre">Líneas</span>
                 <span class="categoria-cantidad">Ver productos</span>
             </a>
@@ -56,7 +56,7 @@
                 <span class="categoria-cantidad">Ver productos</span>
             </a>
             <a href="/categorias/accesorios" class="categoria-card">
-                <span class="categoria-icono">🎒</span>
+                <span class="categoria-icono">🧰</span>
                 <span class="categoria-nombre">Accesorios</span>
                 <span class="categoria-cantidad">Ver productos</span>
             </a>
