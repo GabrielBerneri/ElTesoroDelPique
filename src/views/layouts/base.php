@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= htmlspecialchars($tituloPagina ?? 'El Tesoro del Pique') ?> | El Tesoro del Pique</title>
-    <link rel="stylesheet" href="/assets/css/estilos.css?v=6">
+    <link rel="stylesheet" href="/assets/css/estilos.css?v=7">
 </head>
 <body>
 
@@ -20,7 +20,7 @@
         </a>
 
         <nav class="nav">
-            <a href="/" class="activo">Inicio</a>
+            <a href="/">Inicio</a>
             <a href="/productos">Productos</a>
             <a href="/categorias">Categorías</a>
             <a href="/ofertas">Ofertas</a>
@@ -29,15 +29,69 @@
 
         <div class="header-acciones">
             <?php
-                $cantidadCarrito = 0;
-                foreach (($_SESSION['carrito'] ?? []) as $item) {
-                    $cantidadCarrito += $item['cantidad'];
-                }
-                ?>
-            <a href="/carrito" class="btn-carrito">
-                🛒 Carrito
-                <span class="carrito-cantidad"><?= $cantidadCarrito ?></span>
-            </a>
+            $itemsCarrito    = $_SESSION['carrito'] ?? [];
+            $cantidadCarrito = array_sum(array_column($itemsCarrito, 'cantidad'));
+            $totalCarrito    = array_sum(array_map(fn($i) => $i['precio'] * $i['cantidad'], $itemsCarrito));
+            ?>
+
+            <div class="carrito-wrapper" id="carrito-wrapper">
+
+                <button class="btn-carrito" id="btn-carrito-toggle" aria-expanded="false">
+                    🛒 Carrito
+                    <span class="carrito-cantidad"><?= $cantidadCarrito ?></span>
+                </button>
+
+                <!-- MINI CARRITO -->
+                <div class="mini-carrito" id="mini-carrito" hidden>
+
+                    <?php if (empty($itemsCarrito)): ?>
+                        <div class="mini-vacio">
+                            <span>🎣</span>
+                            <p>Tu carrito está vacío</p>
+                            <a href="/productos" class="mini-ver-btn">Ver productos</a>
+                        </div>
+                    <?php else: ?>
+
+                        <div class="mini-items" id="mini-items">
+                            <?php foreach ($itemsCarrito as $item): ?>
+                            <div class="mini-item" data-id="<?= $item['id'] ?>">
+                                <div class="mini-item-imagen">
+                                    <?php if ($item['imagen']): ?>
+                                        <img src="<?= htmlspecialchars($item['imagen']) ?>"
+                                             alt="<?= htmlspecialchars($item['nombre']) ?>">
+                                    <?php else: ?>
+                                        <span>🎣</span>
+                                    <?php endif; ?>
+                                </div>
+                                <div class="mini-item-info">
+                                    <p class="mini-item-nombre"><?= htmlspecialchars($item['nombre']) ?></p>
+                                    <p class="mini-item-detalle">
+                                        <?= $item['cantidad'] ?> × $<?= number_format($item['precio'], 0, ',', '.') ?>
+                                    </p>
+                                </div>
+                                <p class="mini-item-subtotal">
+                                    $<?= number_format($item['precio'] * $item['cantidad'], 0, ',', '.') ?>
+                                </p>
+                                <button class="mini-item-eliminar" data-id="<?= $item['id'] ?>" title="Quitar">✕</button>
+                            </div>
+                            <?php endforeach; ?>
+                        </div>
+
+                        <div class="mini-footer">
+                            <div class="mini-total-linea">
+                                <span>Total</span>
+                                <span id="mini-total">$<?= number_format($totalCarrito, 0, ',', '.') ?></span>
+                            </div>
+                            <a href="/carrito" class="mini-btn-carrito">Ver carrito completo</a>
+                            <a href="/checkout" class="mini-btn-pago">Ir al pago →</a>
+                        </div>
+
+                    <?php endif; ?>
+
+                </div>
+                <!-- /MINI CARRITO -->
+
+            </div>
         </div>
 
     </div>

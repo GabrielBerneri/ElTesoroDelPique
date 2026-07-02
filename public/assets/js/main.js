@@ -10,9 +10,95 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // ── CARRITO ──────────────────────────────────────────
+    // ── MINI-CARRITO (header) ─────────────────────────────
 
-    // Botones "Agregar al carrito" (página de productos)
+    const btnToggle   = document.getElementById('btn-carrito-toggle');
+    const miniCarrito = document.getElementById('mini-carrito');
+    const wrapper     = document.getElementById('carrito-wrapper');
+
+    if (btnToggle && miniCarrito) {
+        // Abrir / cerrar al hacer clic en el botón
+        btnToggle.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const abierto = !miniCarrito.hidden;
+            miniCarrito.hidden = abierto;
+            btnToggle.setAttribute('aria-expanded', String(!abierto));
+        });
+
+        // Cerrar al hacer clic fuera
+        document.addEventListener('click', (e) => {
+            if (!wrapper.contains(e.target)) {
+                miniCarrito.hidden = true;
+                btnToggle.setAttribute('aria-expanded', 'false');
+            }
+        });
+
+        // Botones eliminar dentro del mini-carrito
+        miniCarrito.addEventListener('click', async (e) => {
+            const btn = e.target.closest('.mini-item-eliminar');
+            if (!btn) return;
+
+            const id   = btn.dataset.id;
+            const fila = miniCarrito.querySelector(`.mini-item[data-id="${id}"]`);
+            fila.style.opacity = '0.4';
+
+            const data = await postJSON('/carrito/eliminar', { id });
+            if (data.ok) {
+                await refrescarMiniCarrito();
+                actualizarContador(data.total_items);
+            } else {
+                fila.style.opacity = '1';
+            }
+        });
+    }
+
+    async function refrescarMiniCarrito() {
+        try {
+            const res  = await fetch('/carrito/mini');
+            const data = await res.json();
+            if (!data.ok || !miniCarrito) return;
+
+            const items    = data.items;
+            const total    = data.total;
+            const miniItems = miniCarrito.querySelector('#mini-items');
+            const miniTotal = miniCarrito.querySelector('#mini-total');
+
+            if (items.length === 0) {
+                miniCarrito.innerHTML = `
+                    <div class="mini-vacio">
+                        <span>🎣</span>
+                        <p>Tu carrito está vacío</p>
+                        <a href="/productos" class="mini-ver-btn">Ver productos</a>
+                    </div>`;
+                return;
+            }
+
+            if (miniItems) {
+                miniItems.innerHTML = items.map(item => `
+                    <div class="mini-item" data-id="${item.id}">
+                        <div class="mini-item-imagen">
+                            ${item.imagen
+                                ? `<img src="${item.imagen}" alt="${item.nombre}">`
+                                : '<span>🎣</span>'}
+                        </div>
+                        <div class="mini-item-info">
+                            <p class="mini-item-nombre">${item.nombre}</p>
+                            <p class="mini-item-detalle">${item.cantidad} × $${parseInt(item.precio).toLocaleString('es-AR')}</p>
+                        </div>
+                        <p class="mini-item-subtotal">$${parseInt(item.subtotal).toLocaleString('es-AR')}</p>
+                        <button class="mini-item-eliminar" data-id="${item.id}" title="Quitar">✕</button>
+                    </div>`).join('');
+                twemoji.parse(miniItems);
+            }
+
+            if (miniTotal) {
+                miniTotal.textContent = '$' + parseInt(total).toLocaleString('es-AR');
+            }
+        } catch { /* silencioso */ }
+    }
+
+    // ── CARRITO — botones "Agregar al carrito" ────────────
+
     document.querySelectorAll('.btn-agregar').forEach(btn => {
         btn.addEventListener('click', async () => {
             const id = btn.dataset.id;
@@ -26,6 +112,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 if (data.ok) {
                     actualizarContador(data.total_items);
+                    await refrescarMiniCarrito();
                     mostrarToast('¡Agregado al carrito!');
                     btn.textContent = '✓ Agregado';
                     setTimeout(() => {
@@ -64,8 +151,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const btnDetalle = document.querySelector('.btn-agregar-detalle');
         if (btnDetalle) {
             btnDetalle.addEventListener('click', async () => {
-                const id       = btnDetalle.dataset.id;
-                const cantidad = parseInt(inputCantidad.value);
+                const id        = btnDetalle.dataset.id;
+                const cantidad  = parseInt(inputCantidad.value);
                 const textoOrig = btnDetalle.innerHTML;
 
                 btnDetalle.disabled = true;
@@ -76,6 +163,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                     if (data.ok) {
                         actualizarContador(data.total_items);
+                        await refrescarMiniCarrito();
                         mostrarToast('¡Agregado al carrito!');
                         btnDetalle.textContent = '✓ Agregado';
                         setTimeout(() => {
@@ -98,14 +186,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // ── PÁGINA DEL CARRITO ───────────────────────────────
 
-    // Botones +/- de cantidad
     document.querySelectorAll('.btn-cantidad').forEach(btn => {
         btn.addEventListener('click', async () => {
-            const id       = btn.dataset.id;
-            const accion   = btn.dataset.accion;
-            const fila     = document.querySelector(`.carrito-item[data-id="${id}"]`);
-            const spanNum  = fila.querySelector('.cantidad-numero');
-            let cantidad   = parseInt(spanNum.textContent);
+            const id      = btn.dataset.id;
+            const accion  = btn.dataset.accion;
+            const fila    = document.querySelector(`.carrito-item[data-id="${id}"]`);
+            const spanNum = fila.querySelector('.cantidad-numero');
+            let cantidad  = parseInt(spanNum.textContent);
 
             cantidad = accion === 'sumar' ? cantidad + 1 : cantidad - 1;
 
@@ -116,7 +203,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     fila.remove();
                 } else {
                     spanNum.textContent = cantidad;
-                    actualizarSubtotalFila(fila, id, cantidad);
+                    actualizarSubtotalFila(fila, cantidad);
                 }
                 actualizarResumen(data.total_items, data.total_precio);
                 actualizarContador(data.total_items);
@@ -125,7 +212,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Botón eliminar item
     document.querySelectorAll('.btn-eliminar-item').forEach(btn => {
         btn.addEventListener('click', async () => {
             const id   = btn.dataset.id;
@@ -145,7 +231,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Botón vaciar carrito
     const btnVaciar = document.getElementById('btn-vaciar');
     if (btnVaciar) {
         btnVaciar.addEventListener('click', async () => {
@@ -158,11 +243,10 @@ document.addEventListener('DOMContentLoaded', () => {
     // ── HELPERS ──────────────────────────────────────────
 
     async function postJSON(url, cuerpo) {
-        const params = new URLSearchParams(cuerpo).toString();
         const res = await fetch(url, {
             method:  'POST',
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-            body:    params,
+            body:    new URLSearchParams(cuerpo).toString(),
         });
         return res.json();
     }
@@ -177,12 +261,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    function actualizarSubtotalFila(fila, id, cantidad) {
-        // precio por unidad está en el DOM como texto
-        const precioEl = fila.querySelector('.carrito-item-precio');
-        const precio = parseInt(
-            precioEl.textContent.replace(/[^0-9]/g, '')
-        );
+    function actualizarSubtotalFila(fila, cantidad) {
+        const precioEl   = fila.querySelector('.carrito-item-precio');
+        const precio     = parseInt(precioEl.textContent.replace(/[^0-9]/g, ''));
         const subtotalEl = fila.querySelector('.carrito-item-subtotal');
         subtotalEl.textContent = '$' + (precio * cantidad).toLocaleString('es-AR');
     }

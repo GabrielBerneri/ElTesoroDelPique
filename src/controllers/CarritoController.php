@@ -90,4 +90,27 @@ class CarritoController {
         Carrito::vaciar();
         echo json_encode(['ok' => true, 'total_items' => 0]);
     }
+
+    public static function mini(): void {
+        header('Content-Type: application/json');
+        $items = Carrito::obtener();
+        $datos = [];
+        foreach ($items as $item) {
+            $datos[] = [
+                'id'       => $item['id'],
+                'nombre'   => $item['nombre'],
+                'precio'   => $item['precio'],
+                'cantidad' => $item['cantidad'],
+                'imagen'   => $item['imagen'],
+                'slug'     => $item['slug'],
+                'subtotal' => $item['precio'] * $item['cantidad'],
+            ];
+        }
+        echo json_encode([
+            'ok'          => true,
+            'items'       => $datos,
+            'total_items' => Carrito::totalItems(),
+            'total'       => Carrito::totalPrecio(),
+        ]);
+    }
 }

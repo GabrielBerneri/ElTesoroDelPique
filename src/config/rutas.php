@@ -36,6 +36,7 @@ function manejarRuta(PDO $bd): void {
             $uri === '/carrito/actualizar' && $metodo === 'POST'     => CarritoController::actualizar(),
             $uri === '/carrito/eliminar'   && $metodo === 'POST'     => CarritoController::eliminar(),
             $uri === '/carrito/vaciar'     && $metodo === 'POST'     => CarritoController::vaciar(),
+            $uri === '/carrito/mini'       && $metodo === 'GET'      => CarritoController::mini(),
             default => redirigir('/carrito'),
         };
         return;
