@@ -19,29 +19,29 @@ $iconosCategorias = [
     </div>
 </section>
 
-<!-- FILTROS -->
-<div class="filtros-bar">
-    <div class="contenedor">
-        <div class="filtros-scroll">
-            <a href="/productos" class="filtro-chip <?= !$slugCategoria ? 'activo' : '' ?>">
-                <span class="filtro-icono">🗂️</span>
+<!-- LAYOUT: SIDEBAR + PRODUCTOS -->
+<div class="productos-layout">
+
+    <!-- SIDEBAR CATEGORÍAS -->
+    <aside class="sidebar-categorias">
+        <p class="sidebar-titulo">Categorías</p>
+        <nav class="sidebar-nav">
+            <a href="/productos" class="sidebar-item <?= !$slugCategoria ? 'activo' : '' ?>">
+                <span class="sidebar-icono">🗂️</span>
                 <span>Todos</span>
             </a>
             <?php foreach ($categorias as $cat): ?>
             <a href="/categorias/<?= $cat['slug'] ?>"
-               class="filtro-chip <?= $slugCategoria === $cat['slug'] ? 'activo' : '' ?>">
-                <span class="filtro-icono"><?= $iconosCategorias[$cat['slug']] ?? '📦' ?></span>
+               class="sidebar-item <?= $slugCategoria === $cat['slug'] ? 'activo' : '' ?>">
+                <span class="sidebar-icono"><?= $iconosCategorias[$cat['slug']] ?? '📦' ?></span>
                 <span><?= htmlspecialchars($cat['nombre']) ?></span>
             </a>
             <?php endforeach; ?>
-        </div>
-    </div>
-</div>
+        </nav>
+    </aside>
 
-<!-- PRODUCTOS -->
-<section class="pagina-productos">
-    <div class="contenedor">
-
+    <!-- GRILLA DE PRODUCTOS -->
+    <main class="productos-contenido">
         <?php if (empty($productos)): ?>
             <div class="sin-productos">
                 <span>🎣</span>
@@ -49,9 +49,6 @@ $iconosCategorias = [
                 <a href="/productos" class="btn btn-primario">Ver todos los productos</a>
             </div>
         <?php else: ?>
-            <p class="cantidad-resultados">
-                <?= count($productos) ?> producto<?= count($productos) !== 1 ? 's' : '' ?> encontrados
-            </p>
             <div class="productos-grid">
                 <?php foreach ($productos as $producto): ?>
                 <article class="producto-card">
@@ -93,6 +90,6 @@ $iconosCategorias = [
                 <?php endforeach; ?>
             </div>
         <?php endif; ?>
+    </main>
 
-    </div>
-</section>
+</div>
