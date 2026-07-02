@@ -1,0 +1,37 @@
+<?php
+
+class Producto {
+
+    private PDO $bd;
+
+    public function __construct(PDO $bd) {
+        $this->bd = $bd;
+    }
+
+    public function obtenerDestacados(int $limite = 8): array {
+        $consulta = $this->bd->prepare(
+            'SELECT p.*, c.nombre AS categoria_nombre
+             FROM productos p
+             JOIN categorias c ON p.categoria_id = c.id
+             WHERE p.activo = 1
+             ORDER BY p.creado_en DESC
+             LIMIT :limite'
+        );
+        $consulta->bindValue(':limite', $limite, PDO::PARAM_INT);
+        $consulta->execute();
+        return $consulta->fetchAll();
+    }
+
+    public function obtenerPorCategoria(string $slug): array {
+        $consulta = $this->bd->prepare(
+            'SELECT p.*, c.nombre AS categoria_nombre
+             FROM productos p
+             JOIN categorias c ON p.categoria_id = c.id
+             WHERE c.slug = :slug AND p.activo = 1
+             ORDER BY p.nombre'
+        );
+        $consulta->bindValue(':slug', $slug);
+        $consulta->execute();
+        return $consulta->fetchAll();
+    }
+}

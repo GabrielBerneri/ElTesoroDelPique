@@ -76,33 +76,32 @@
         </div>
 
         <div class="productos-grid">
-            <!-- Tarjetas de ejemplo — se reemplazarán con datos reales de la BD -->
-            <?php
-            $productosEjemplo = [
-                ['nombre' => 'Caña Spinning 2.40m', 'categoria' => 'Cañas',    'precio' => 18500, 'icono' => '🎣', 'badge' => 'Nuevo'],
-                ['nombre' => 'Reel Frontal 4000',   'categoria' => 'Reels',    'precio' => 32000, 'icono' => '🔄', 'badge' => null],
-                ['nombre' => 'Señuelo Popper 9cm',  'categoria' => 'Señuelos', 'precio' => 4200,  'icono' => '🐟', 'badge' => 'Oferta'],
-                ['nombre' => 'Tanza Monofilamento', 'categoria' => 'Líneas',   'precio' => 1800,  'icono' => '〰️', 'badge' => null],
-            ];
-
-            foreach ($productosEjemplo as $producto): ?>
-            <article class="producto-card">
-                <div class="producto-imagen">
-                    <?= $producto['icono'] ?>
-                    <?php if ($producto['badge']): ?>
-                    <span class="producto-badge"><?= $producto['badge'] ?></span>
-                    <?php endif; ?>
-                </div>
-                <div class="producto-info">
-                    <span class="producto-categoria"><?= $producto['categoria'] ?></span>
-                    <h3 class="producto-nombre"><?= $producto['nombre'] ?></h3>
-                    <p class="producto-precio">$<?= number_format($producto['precio'], 0, ',', '.') ?></p>
-                </div>
-                <div class="producto-footer">
-                    <button class="btn-agregar">Agregar al carrito</button>
-                </div>
-            </article>
-            <?php endforeach; ?>
+            <?php if (empty($productosDestacados)): ?>
+                <p style="color: var(--color-texto-suave); grid-column: 1/-1; text-align: center; padding: 40px 0;">
+                    Próximamente cargamos los productos. ¡Volvé pronto!
+                </p>
+            <?php else: ?>
+                <?php foreach ($productosDestacados as $producto): ?>
+                <article class="producto-card">
+                    <div class="producto-imagen">
+                        <?php if ($producto['imagen_principal']): ?>
+                            <img src="<?= htmlspecialchars($producto['imagen_principal']) ?>"
+                                 alt="<?= htmlspecialchars($producto['nombre']) ?>">
+                        <?php else: ?>
+                            🎣
+                        <?php endif; ?>
+                    </div>
+                    <div class="producto-info">
+                        <span class="producto-categoria"><?= htmlspecialchars($producto['categoria_nombre']) ?></span>
+                        <h3 class="producto-nombre"><?= htmlspecialchars($producto['nombre']) ?></h3>
+                        <p class="producto-precio">$<?= number_format($producto['precio'], 0, ',', '.') ?></p>
+                    </div>
+                    <div class="producto-footer">
+                        <button class="btn-agregar">Agregar al carrito</button>
+                    </div>
+                </article>
+                <?php endforeach; ?>
+            <?php endif; ?>
         </div>
     </div>
 </section>
