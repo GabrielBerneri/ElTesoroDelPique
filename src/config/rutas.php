@@ -13,6 +13,13 @@ function manejarRuta(PDO $bd): void {
         return;
     }
 
+    // Página de productos y categorías
+    if ($uri === '/productos' || str_starts_with($uri, '/categorias/')) {
+        require_once BASE_PATH . '/src/controllers/ProductoController.php';
+        ProductoController::lista($bd, $uri);
+        return;
+    }
+
     // Rutas del panel admin
     if (str_starts_with($uri, '/admin')) {
         require_once BASE_PATH . '/src/controllers/AdminController.php';

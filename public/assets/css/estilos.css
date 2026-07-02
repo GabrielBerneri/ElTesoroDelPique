@@ -618,11 +618,143 @@ ul {
 }
 
 /* =========================================
+   PÁGINA DE PRODUCTOS
+   ========================================= */
+.pagina-header {
+    background: linear-gradient(160deg, #0d0d0d 0%, #1a0a00 100%);
+    border-bottom: 3px solid var(--color-acento);
+    padding: 40px 20px;
+}
+
+.pagina-titulo {
+    font-family: var(--fuente-titulo);
+    font-size: 36px;
+    color: var(--color-acento);
+    margin-bottom: 6px;
+}
+
+.pagina-subtitulo {
+    font-size: 14px;
+    color: rgba(245,230,200,0.6);
+    letter-spacing: 1px;
+}
+
+.pagina-productos {
+    padding: 40px 20px;
+}
+
+.productos-layout {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    gap: 32px;
+    align-items: start;
+}
+
+/* Sidebar */
+.categorias-sidebar {
+    background: var(--color-blanco);
+    border-radius: var(--radio-borde);
+    padding: 20px;
+    box-shadow: var(--sombra-suave);
+    position: sticky;
+    top: 90px;
+}
+
+.sidebar-titulo {
+    font-family: var(--fuente-subtitulo);
+    font-size: 13px;
+    font-weight: 900;
+    color: var(--color-primario);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 14px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--color-acento);
+}
+
+.categorias-lista {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.categorias-lista a {
+    display: block;
+    padding: 9px 12px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--color-texto-suave);
+    transition: all var(--transicion);
+}
+
+.categorias-lista a:hover {
+    background: var(--color-fondo);
+    color: var(--color-texto);
+}
+
+.categorias-lista a.activo {
+    background: var(--color-primario);
+    color: var(--color-acento);
+    font-weight: 700;
+}
+
+/* Contenido productos */
+.cantidad-resultados {
+    font-size: 13px;
+    color: var(--color-texto-suave);
+    margin-bottom: 20px;
+}
+
+.badge-agotado {
+    background-color: #666 !important;
+}
+
+.btn-agotado {
+    background-color: #ccc !important;
+    cursor: not-allowed !important;
+    color: #888 !important;
+}
+
+.producto-descripcion {
+    font-size: 13px;
+    color: var(--color-texto-suave);
+    line-height: 1.5;
+    margin-top: 4px;
+}
+
+.producto-nombre a {
+    color: var(--color-texto);
+    transition: color var(--transicion);
+}
+
+.producto-nombre a:hover {
+    color: var(--color-acento);
+}
+
+.sin-productos {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--color-texto-suave);
+}
+
+.sin-productos span {
+    font-size: 48px;
+    display: block;
+    margin-bottom: 16px;
+}
+
+.sin-productos p {
+    font-size: 16px;
+    margin-bottom: 24px;
+}
+
+/* =========================================
    RESPONSIVE — pantallas pequeñas
    ========================================= */
 @media (max-width: 768px) {
     .nav {
-        display: none; /* en mobile se maneja con menú hamburguesa */
+        display: none;
     }
 
     .hero {
@@ -637,5 +769,13 @@ ul {
     .seccion-header {
         flex-direction: column;
         align-items: flex-start;
+    }
+
+    .productos-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .categorias-sidebar {
+        position: static;
     }
 }
