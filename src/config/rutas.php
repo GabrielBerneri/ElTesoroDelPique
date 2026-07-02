@@ -20,6 +20,20 @@ function manejarRuta(PDO $bd): void {
         return;
     }
 
+    // Rutas del carrito
+    if (str_starts_with($uri, '/carrito')) {
+        require_once BASE_PATH . '/src/controllers/CarritoController.php';
+        match (true) {
+            $uri === '/carrito'                                      => CarritoController::vista($bd),
+            $uri === '/carrito/agregar'    && $metodo === 'POST'     => CarritoController::agregar($bd),
+            $uri === '/carrito/actualizar' && $metodo === 'POST'     => CarritoController::actualizar(),
+            $uri === '/carrito/eliminar'   && $metodo === 'POST'     => CarritoController::eliminar(),
+            $uri === '/carrito/vaciar'     && $metodo === 'POST'     => CarritoController::vaciar(),
+            default => redirigir('/carrito'),
+        };
+        return;
+    }
+
     // Rutas del panel admin
     if (str_starts_with($uri, '/admin')) {
         require_once BASE_PATH . '/src/controllers/AdminController.php';

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= htmlspecialchars($tituloPagina ?? 'El Tesoro del Pique') ?> | El Tesoro del Pique</title>
-    <link rel="stylesheet" href="/assets/css/estilos.css?v=4">
+    <link rel="stylesheet" href="/assets/css/estilos.css?v=5">
 </head>
 <body>
 
@@ -28,9 +28,15 @@
         </nav>
 
         <div class="header-acciones">
+            <?php
+                $cantidadCarrito = 0;
+                foreach (($_SESSION['carrito'] ?? []) as $item) {
+                    $cantidadCarrito += $item['cantidad'];
+                }
+                ?>
             <a href="/carrito" class="btn-carrito">
                 🛒 Carrito
-                <span class="carrito-cantidad">0</span>
+                <span class="carrito-cantidad"><?= $cantidadCarrito ?></span>
             </a>
         </div>
 
