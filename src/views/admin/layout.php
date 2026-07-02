@@ -21,6 +21,9 @@
         <a href="/admin/productos" class="<?= str_contains($_SERVER['REQUEST_URI'], '/admin/productos') ? 'activo' : '' ?>">
             📦 Productos
         </a>
+        <a href="/admin/perfil" class="<?= str_contains($_SERVER['REQUEST_URI'], '/admin/perfil') ? 'activo' : '' ?>">
+            👤 Mi perfil
+        </a>
         <a href="/" target="_blank">🌐 Ver sitio</a>
         <a href="/admin/logout" class="logout">🚪 Salir</a>
     </nav>

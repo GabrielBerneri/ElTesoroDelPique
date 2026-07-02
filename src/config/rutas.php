@@ -28,6 +28,8 @@ function manejarRuta(PDO $bd): void {
             str_starts_with($uri, '/admin/productos/editar') && $metodo === 'GET'  => AdminController::productoEditarVista($bd, $uri),
             str_starts_with($uri, '/admin/productos/editar') && $metodo === 'POST' => AdminController::productoEditarProcesar($bd, $uri),
             str_starts_with($uri, '/admin/productos/eliminar')                     => AdminController::productoEliminar($bd, $uri),
+            $uri === '/admin/perfil' && $metodo === 'GET'                           => AdminController::perfilVista(),
+            $uri === '/admin/perfil' && $metodo === 'POST'                          => AdminController::perfilProcesar($bd),
             default => redirigir('/admin')
         };
         return;

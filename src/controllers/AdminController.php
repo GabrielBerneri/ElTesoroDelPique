@@ -111,6 +111,42 @@ class AdminController {
         redirigir('/admin/productos');
     }
 
+    public static function perfilVista(): void {
+        requiereAdmin();
+        $tituloPagina = 'Mi perfil';
+        $exito = $_SESSION['perfil_exito'] ?? null;
+        $error = $_SESSION['perfil_error'] ?? null;
+        unset($_SESSION['perfil_exito'], $_SESSION['perfil_error']);
+        require_once BASE_PATH . '/src/views/admin/perfil.php';
+    }
+
+    public static function perfilProcesar(PDO $bd): void {
+        requiereAdmin();
+
+        $actual     = $_POST['password_actual']    ?? '';
+        $nueva      = $_POST['password_nueva']     ?? '';
+        $confirmar  = $_POST['password_confirmar'] ?? '';
+
+        $consulta = $bd->prepare('SELECT password FROM usuarios WHERE id = :id');
+        $consulta->execute([':id' => $_SESSION['admin_id']]);
+        $usuario = $consulta->fetch();
+
+        if (!password_verify($actual, $usuario['password'])) {
+            $_SESSION['perfil_error'] = 'La contraseña actual es incorrecta.';
+        } elseif ($nueva !== $confirmar) {
+            $_SESSION['perfil_error'] = 'Las contraseñas nuevas no coinciden.';
+        } elseif (strlen($nueva) < 6) {
+            $_SESSION['perfil_error'] = 'La contraseña debe tener al menos 6 caracteres.';
+        } else {
+            $hash = password_hash($nueva, PASSWORD_BCRYPT);
+            $bd->prepare('UPDATE usuarios SET password = :password WHERE id = :id')
+               ->execute([':password' => $hash, ':id' => $_SESSION['admin_id']]);
+            $_SESSION['perfil_exito'] = 'Contraseña actualizada correctamente.';
+        }
+
+        redirigir('/admin/perfil');
+    }
+
     public static function productoEliminar(PDO $bd, string $uri): void {
         requiereAdmin();
         $id = (int) basename($uri);
