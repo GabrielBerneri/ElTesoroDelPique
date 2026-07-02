@@ -20,6 +20,13 @@ function manejarRuta(PDO $bd): void {
         return;
     }
 
+    // Detalle de producto
+    if (str_starts_with($uri, '/producto/')) {
+        require_once BASE_PATH . '/src/controllers/ProductoController.php';
+        ProductoController::detalle($bd, $uri);
+        return;
+    }
+
     // Rutas del carrito
     if (str_starts_with($uri, '/carrito')) {
         require_once BASE_PATH . '/src/controllers/CarritoController.php';

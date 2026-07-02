@@ -39,6 +39,17 @@ class Producto {
         return $consulta->fetch();
     }
 
+    public function obtenerPorSlug(string $slug): array|false {
+        $consulta = $this->bd->prepare(
+            'SELECT p.*, c.nombre AS categoria_nombre, c.slug AS categoria_slug
+             FROM productos p
+             JOIN categorias c ON p.categoria_id = c.id
+             WHERE p.slug = :slug AND p.activo = 1'
+        );
+        $consulta->execute([':slug' => $slug]);
+        return $consulta->fetch();
+    }
+
     public function obtenerPorCategoria(string $slug): array {
         $consulta = $this->bd->prepare(
             'SELECT p.*, c.nombre AS categoria_nombre

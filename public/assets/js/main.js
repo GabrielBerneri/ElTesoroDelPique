@@ -45,6 +45,57 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
+    // ── PÁGINA DE DETALLE ────────────────────────────────
+
+    const inputCantidad = document.getElementById('detalle-cantidad');
+    if (inputCantidad) {
+        const max = parseInt(inputCantidad.max);
+
+        document.getElementById('btn-restar').addEventListener('click', () => {
+            const val = parseInt(inputCantidad.value);
+            if (val > 1) inputCantidad.value = val - 1;
+        });
+
+        document.getElementById('btn-sumar').addEventListener('click', () => {
+            const val = parseInt(inputCantidad.value);
+            if (val < max) inputCantidad.value = val + 1;
+        });
+
+        const btnDetalle = document.querySelector('.btn-agregar-detalle');
+        if (btnDetalle) {
+            btnDetalle.addEventListener('click', async () => {
+                const id       = btnDetalle.dataset.id;
+                const cantidad = parseInt(inputCantidad.value);
+                const textoOrig = btnDetalle.innerHTML;
+
+                btnDetalle.disabled = true;
+                btnDetalle.textContent = 'Agregando...';
+
+                try {
+                    const data = await postJSON('/carrito/agregar', { id, cantidad });
+
+                    if (data.ok) {
+                        actualizarContador(data.total_items);
+                        mostrarToast('¡Agregado al carrito!');
+                        btnDetalle.textContent = '✓ Agregado';
+                        setTimeout(() => {
+                            btnDetalle.disabled = false;
+                            btnDetalle.innerHTML = textoOrig;
+                            twemoji.parse(btnDetalle);
+                        }, 2000);
+                    } else {
+                        mostrarToast(data.mensaje, 'error');
+                        btnDetalle.disabled = false;
+                        btnDetalle.innerHTML = textoOrig;
+                    }
+                } catch {
+                    btnDetalle.disabled = false;
+                    btnDetalle.innerHTML = textoOrig;
+                }
+            });
+        }
+    }
+
     // ── PÁGINA DEL CARRITO ───────────────────────────────
 
     // Botones +/- de cantidad

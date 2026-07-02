@@ -30,4 +30,26 @@ class ProductoController {
 
         require_once BASE_PATH . '/src/views/layouts/base.php';
     }
+
+    public static function detalle(PDO $bd, string $uri): void {
+        $slug           = basename($uri);
+        $modeloProducto = new Producto($bd);
+        $producto       = $modeloProducto->obtenerPorSlug($slug);
+
+        if (!$producto) {
+            http_response_code(404);
+            $tituloPagina = 'Producto no encontrado';
+            $contenido    = '<div style="text-align:center;padding:80px 20px"><h1>Producto no encontrado</h1><a href="/productos">Ver todos los productos</a></div>';
+            require_once BASE_PATH . '/src/views/layouts/base.php';
+            return;
+        }
+
+        $tituloPagina = $producto['nombre'];
+
+        ob_start();
+        require_once BASE_PATH . '/src/views/productos/detalle.php';
+        $contenido = ob_get_clean();
+
+        require_once BASE_PATH . '/src/views/layouts/base.php';
+    }
 }
