@@ -642,21 +642,21 @@ ul {
 .productos-layout {
     display: flex;
     align-items: flex-start;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 32px 20px 60px;
+    gap: 24px;
     min-height: 60vh;
 }
 
 /* Sidebar de categorías */
 .sidebar-categorias {
-    width: 220px;
+    width: 200px;
     flex-shrink: 0;
-    background: var(--color-primario);
-    min-height: 100%;
-    padding: 28px 16px 40px;
+    padding-top: 4px;
     position: sticky;
-    top: 88px;
+    top: 108px;
     align-self: flex-start;
-    max-height: calc(100vh - 88px);
-    overflow-y: auto;
 }
 
 .sidebar-titulo {
@@ -665,9 +665,9 @@ ul {
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 2px;
-    color: rgba(245,230,200,0.4);
-    margin-bottom: 16px;
-    padding-left: 12px;
+    color: var(--color-texto-suave);
+    margin-bottom: 10px;
+    padding-left: 4px;
 }
 
 .sidebar-nav {
@@ -680,25 +680,23 @@ ul {
     display: flex;
     align-items: center;
     gap: 10px;
-    padding: 11px 14px;
+    padding: 10px 14px;
     border-radius: var(--radio-borde);
     font-size: 14px;
     font-weight: 600;
-    color: rgba(255,255,255,0.6);
+    color: var(--color-texto);
+    background: transparent;
     transition: all var(--transicion);
-    border-left: 3px solid transparent;
 }
 
 .sidebar-item:hover {
-    background: rgba(255,255,255,0.06);
-    color: rgba(255,255,255,0.9);
-    border-left-color: rgba(200,150,12,0.5);
+    background: var(--color-primario);
+    color: rgba(255,255,255,0.85);
 }
 
 .sidebar-item.activo {
-    background: rgba(200,150,12,0.15);
+    background: var(--color-primario);
     color: var(--color-acento);
-    border-left-color: var(--color-acento);
     font-weight: 700;
 }
 
@@ -711,7 +709,6 @@ ul {
 /* Contenido productos */
 .productos-contenido {
     flex: 1;
-    padding: 32px 28px 60px;
     min-width: 0;
 }
 
