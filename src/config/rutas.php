@@ -1,0 +1,44 @@
+<?php
+// Router simple: lee la URL y decide qué controlador ejecutar
+
+function manejarRuta(PDO $bd): void {
+    $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+    $uri = rtrim($uri, '/') ?: '/';
+    $metodo = $_SERVER['REQUEST_METHOD'];
+
+    // Rutas públicas
+    if ($uri === '/') {
+        require_once BASE_PATH . '/src/controllers/HomeController.php';
+        HomeController::inicio($bd);
+        return;
+    }
+
+    // Rutas del panel admin
+    if (str_starts_with($uri, '/admin')) {
+        require_once BASE_PATH . '/src/controllers/AdminController.php';
+
+        match (true) {
+            $uri === '/admin/login'  && $metodo === 'GET'  => AdminController::loginVista(),
+            $uri === '/admin/login'  && $metodo === 'POST' => AdminController::loginProcesar($bd),
+            $uri === '/admin/logout'                        => AdminController::logout(),
+            $uri === '/admin'        || $uri === '/admin/dashboard' => AdminController::dashboard($bd),
+            $uri === '/admin/productos'                     => AdminController::productos($bd),
+            $uri === '/admin/productos/nuevo' && $metodo === 'GET'  => AdminController::productoNuevoVista($bd),
+            $uri === '/admin/productos/nuevo' && $metodo === 'POST' => AdminController::productoNuevoProcesar($bd),
+            str_starts_with($uri, '/admin/productos/editar') && $metodo === 'GET'  => AdminController::productoEditarVista($bd, $uri),
+            str_starts_with($uri, '/admin/productos/editar') && $metodo === 'POST' => AdminController::productoEditarProcesar($bd, $uri),
+            str_starts_with($uri, '/admin/productos/eliminar')                     => AdminController::productoEliminar($bd, $uri),
+            default => redirigir('/admin')
+        };
+        return;
+    }
+
+    // 404
+    http_response_code(404);
+    echo '<h1>Página no encontrada</h1>';
+}
+
+function redirigir(string $url): void {
+    header("Location: $url");
+    exit;
+}

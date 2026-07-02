@@ -22,6 +22,23 @@ class Producto {
         return $consulta->fetchAll();
     }
 
+    public function obtenerTodos(): array {
+        return $this->bd->query(
+            'SELECT p.*, c.nombre AS categoria_nombre
+             FROM productos p
+             JOIN categorias c ON p.categoria_id = c.id
+             ORDER BY p.creado_en DESC'
+        )->fetchAll();
+    }
+
+    public function obtenerPorId(int $id): array|false {
+        $consulta = $this->bd->prepare(
+            'SELECT * FROM productos WHERE id = :id'
+        );
+        $consulta->execute([':id' => $id]);
+        return $consulta->fetch();
+    }
+
     public function obtenerPorCategoria(string $slug): array {
         $consulta = $this->bd->prepare(
             'SELECT p.*, c.nombre AS categoria_nombre

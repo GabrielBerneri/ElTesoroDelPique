@@ -6,28 +6,16 @@ define('BASE_PATH', dirname(__DIR__));
 require_once BASE_PATH . '/src/config/env.php';
 require_once BASE_PATH . '/src/config/database.php';
 require_once BASE_PATH . '/src/helpers/sanitize.php';
-require_once BASE_PATH . '/src/models/Categoria.php';
-require_once BASE_PATH . '/src/models/Producto.php';
+require_once BASE_PATH . '/src/helpers/auth.php';
+require_once BASE_PATH . '/src/config/rutas.php';
 
 cargarEnv();
+iniciarSesion();
 
 try {
     $bd = conectarBD();
-    $modeloCategoria = new Categoria($bd);
-    $modeloProducto  = new Producto($bd);
-
-    $categorias          = $modeloCategoria->obtenerTodas();
-    $productosDestacados = $modeloProducto->obtenerDestacados(8);
-
 } catch (PDOException $e) {
-    // En producción no mostramos el error real
-    $categorias          = [];
-    $productosDestacados = [];
+    die('Error de conexión a la base de datos.');
 }
 
-ob_start();
-require_once BASE_PATH . '/src/views/home/inicio.php';
-$contenido = ob_get_clean();
-
-$tituloPagina = 'Inicio';
-require_once BASE_PATH . '/src/views/layouts/base.php';
+manejarRuta($bd);
