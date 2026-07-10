@@ -14,18 +14,36 @@
 <!-- DETALLE -->
 <div class="detalle-layout contenedor">
 
-    <!-- IMAGEN -->
-    <div class="detalle-imagen-wrap">
-        <?php if ($producto['imagen_principal']): ?>
-            <img src="<?= htmlspecialchars($producto['imagen_principal']) ?>"
-                 alt="<?= htmlspecialchars($producto['nombre']) ?>"
-                 class="detalle-imagen">
-        <?php else: ?>
-            <div class="detalle-imagen-placeholder">🎣</div>
-        <?php endif; ?>
+    <!-- GALERÍA -->
+    <div class="detalle-galeria">
+        <div class="detalle-imagen-wrap">
+            <?php if (!empty($imagenes)): ?>
+                <img src="<?= htmlspecialchars($imagenes[0]['ruta']) ?>"
+                     alt="<?= htmlspecialchars($producto['nombre']) ?>"
+                     class="detalle-imagen" id="detalle-imagen-principal">
+            <?php elseif ($producto['imagen_principal']): ?>
+                <img src="<?= htmlspecialchars($producto['imagen_principal']) ?>"
+                     alt="<?= htmlspecialchars($producto['nombre']) ?>"
+                     class="detalle-imagen" id="detalle-imagen-principal">
+            <?php else: ?>
+                <div class="detalle-imagen-placeholder">🎣</div>
+            <?php endif; ?>
 
-        <?php if ($producto['stock'] == 0): ?>
-            <span class="detalle-badge-agotado">Sin stock</span>
+            <?php if ($producto['stock'] == 0): ?>
+                <span class="detalle-badge-agotado">Sin stock</span>
+            <?php endif; ?>
+        </div>
+
+        <?php if (count($imagenes) > 1): ?>
+        <div class="detalle-miniaturas">
+            <?php foreach ($imagenes as $i => $img): ?>
+            <button type="button"
+                    class="detalle-miniatura <?= $i === 0 ? 'activa' : '' ?>"
+                    data-ruta="<?= htmlspecialchars($img['ruta']) ?>">
+                <img src="<?= htmlspecialchars($img['ruta']) ?>" alt="Vista <?= $i + 1 ?>">
+            </button>
+            <?php endforeach; ?>
+        </div>
         <?php endif; ?>
     </div>
 

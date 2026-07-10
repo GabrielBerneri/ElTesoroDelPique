@@ -132,6 +132,17 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
+    // ── GALERÍA DE DETALLE (miniaturas) ──────────────────
+
+    const imagenPrincipal = document.getElementById('detalle-imagen-principal');
+    document.querySelectorAll('.detalle-miniatura').forEach(mini => {
+        mini.addEventListener('click', () => {
+            if (imagenPrincipal) imagenPrincipal.src = mini.dataset.ruta;
+            document.querySelectorAll('.detalle-miniatura').forEach(m => m.classList.remove('activa'));
+            mini.classList.add('activa');
+        });
+    });
+
     // ── PÁGINA DE DETALLE ────────────────────────────────
 
     const inputCantidad = document.getElementById('detalle-cantidad');

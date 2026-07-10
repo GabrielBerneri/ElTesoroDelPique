@@ -7,13 +7,21 @@
 
 <div class="stats-grid">
     <div class="stat-card">
-        <span class="stat-numero"><?= $totalProductos ?></span>
-        <span class="stat-label">Productos</span>
-        <a href="/admin/productos" class="stat-link">Ver todos →</a>
+        <span class="stat-numero">$<?= number_format($totalVendido, 0, ',', '.') ?></span>
+        <span class="stat-label">Vendido</span>
+        <a href="/admin/ventas" class="stat-link">Ver ventas →</a>
     </div>
     <div class="stat-card">
         <span class="stat-numero"><?= $totalPedidos ?></span>
         <span class="stat-label">Pedidos</span>
+        <?php if ($pedidosPendientes > 0): ?>
+        <a href="/admin/ventas" class="stat-link"><?= $pedidosPendientes ?> pendiente<?= $pedidosPendientes !== 1 ? 's' : '' ?> →</a>
+        <?php endif; ?>
+    </div>
+    <div class="stat-card">
+        <span class="stat-numero"><?= $totalProductos ?></span>
+        <span class="stat-label">Productos</span>
+        <a href="/admin/productos" class="stat-link">Ver todos →</a>
     </div>
     <div class="stat-card">
         <span class="stat-numero"><?= $totalUsuarios ?></span>

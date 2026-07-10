@@ -47,8 +47,8 @@ function manejarRuta(PDO $bd): void {
         require_once BASE_PATH . '/src/controllers/CheckoutController.php';
         match (true) {
             $uri === '/checkout'           && $metodo === 'GET'  => CheckoutController::vista(),
-            $uri === '/checkout/procesar'  && $metodo === 'POST' => CheckoutController::procesar(),
-            $uri === '/checkout/exito'                           => CheckoutController::exito(),
+            $uri === '/checkout/procesar'  && $metodo === 'POST' => CheckoutController::procesar($bd),
+            $uri === '/checkout/exito'                           => CheckoutController::exito($bd),
             $uri === '/checkout/fallo'                           => CheckoutController::fallo(),
             $uri === '/checkout/pendiente'                       => CheckoutController::pendiente(),
             default => redirigir('/checkout'),
@@ -71,6 +71,13 @@ function manejarRuta(PDO $bd): void {
             str_starts_with($uri, '/admin/productos/editar') && $metodo === 'GET'  => AdminController::productoEditarVista($bd, $uri),
             str_starts_with($uri, '/admin/productos/editar') && $metodo === 'POST' => AdminController::productoEditarProcesar($bd, $uri),
             str_starts_with($uri, '/admin/productos/eliminar')                     => AdminController::productoEliminar($bd, $uri),
+            str_starts_with($uri, '/admin/imagenes/eliminar')                      => AdminController::imagenEliminar($bd, $uri),
+            $uri === '/admin/categorias'         && $metodo === 'GET'               => AdminController::categorias($bd),
+            $uri === '/admin/categorias/nueva'   && $metodo === 'POST'              => AdminController::categoriaNuevaProcesar($bd),
+            str_starts_with($uri, '/admin/categorias/eliminar')                    => AdminController::categoriaEliminar($bd, $uri),
+            $uri === '/admin/ventas'             && $metodo === 'GET'               => AdminController::ventas($bd),
+            str_starts_with($uri, '/admin/ventas/estado/') && $metodo === 'POST'   => AdminController::ventaEstadoProcesar($bd, $uri),
+            str_starts_with($uri, '/admin/ventas/')        && $metodo === 'GET'    => AdminController::ventaDetalle($bd, $uri),
             $uri === '/admin/perfil' && $metodo === 'GET'                           => AdminController::perfilVista(),
             $uri === '/admin/perfil' && $metodo === 'POST'                          => AdminController::perfilProcesar($bd),
             default => redirigir('/admin')

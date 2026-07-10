@@ -1,6 +1,7 @@
 <?php
 
 require_once BASE_PATH . '/src/models/Carrito.php';
+require_once BASE_PATH . '/src/models/Pedido.php';
 
 class CheckoutController {
 
@@ -22,7 +23,7 @@ class CheckoutController {
         require_once BASE_PATH . '/src/views/layouts/base.php';
     }
 
-    public static function procesar(): void {
+    public static function procesar(PDO $bd): void {
         $items = Carrito::obtener();
 
         if (empty($items)) {
@@ -68,6 +69,23 @@ class CheckoutController {
 
         $referencia = 'ORD-' . time() . '-' . rand(100, 999);
 
+        // Guardar el pedido como "pendiente" antes de ir a MercadoPago
+        $direccionCompleta = trim($direccion . ', ' . $ciudad . ', ' . $provincia, ', ');
+        try {
+            $modeloPedido = new Pedido($bd);
+            $modeloPedido->crear([
+                'email'      => $email,
+                'nombre'     => $nombre,
+                'telefono'   => $telefono,
+                'total'      => Carrito::totalPrecio(),
+                'referencia' => $referencia,
+                'direccion'  => $direccionCompleta,
+            ], $items);
+        } catch (Throwable $e) {
+            error_log('Error al guardar pedido: ' . $e->getMessage());
+            redirigir('/checkout?error=mp');
+        }
+
         try {
             require_once BASE_PATH . '/src/helpers/mercadopago.php';
             $preferencia = crearPreferenciaMercadoPago($mpItems, $pagador, $referencia);
@@ -87,9 +105,15 @@ class CheckoutController {
         }
     }
 
-    public static function exito(): void {
+    public static function exito(PDO $bd): void {
+        $referencia = $_SESSION['checkout_referencia'] ?? '';
+
+        if ($referencia) {
+            $modeloPedido = new Pedido($bd);
+            $modeloPedido->marcarPagadoPorReferencia($referencia);
+        }
+
         Carrito::vaciar();
-        $referencia   = $_SESSION['checkout_referencia'] ?? '';
         $tituloPagina = '¡Pago aprobado!';
 
         ob_start();

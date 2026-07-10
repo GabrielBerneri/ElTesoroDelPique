@@ -9,7 +9,8 @@
 
 <form method="POST"
       action="<?= $editando ? '/admin/productos/editar/'.$producto['id'] : '/admin/productos/nuevo' ?>"
-      class="formulario-admin">
+      class="formulario-admin"
+      enctype="multipart/form-data">
 
     <div class="campo-grupo">
         <div class="campo">
@@ -46,6 +47,35 @@
             <input type="number" id="stock" name="stock" min="0" required
                    value="<?= $producto['stock'] ?? 0 ?>">
         </div>
+    </div>
+
+    <?php if ($editando && !empty($imagenes)): ?>
+    <div class="campo">
+        <label>Imágenes actuales</label>
+        <div class="galeria-admin">
+            <?php foreach ($imagenes as $i => $img): ?>
+            <div class="galeria-admin-item">
+                <img src="<?= htmlspecialchars($img['ruta']) ?>" alt="Imagen del producto">
+                <?php if ($i === 0): ?><span class="galeria-badge-principal">Principal</span><?php endif; ?>
+                <a href="/admin/imagenes/eliminar/<?= $img['id'] ?>"
+                   class="galeria-admin-eliminar"
+                   onclick="return confirm('¿Eliminar esta imagen?')">✕</a>
+            </div>
+            <?php endforeach; ?>
+        </div>
+    </div>
+    <?php endif; ?>
+
+    <div class="campo">
+        <label for="imagenes">
+            <?= $editando ? 'Agregar más imágenes' : 'Imágenes del producto' ?>
+        </label>
+        <input type="file" id="imagenes" name="imagenes[]"
+               accept="image/jpeg,image/png,image/webp" multiple>
+        <p class="campo-ayuda">
+            Podés seleccionar varias a la vez (JPG, PNG o WEBP, máx. 5 MB c/u).
+            La primera imagen será la principal.
+        </p>
     </div>
 
     <div class="campo campo-check">

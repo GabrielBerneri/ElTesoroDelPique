@@ -50,6 +50,14 @@ class Producto {
         return $consulta->fetch();
     }
 
+    public function obtenerImagenes(int $productoId): array {
+        $consulta = $this->bd->prepare(
+            'SELECT * FROM producto_imagenes WHERE producto_id = :id ORDER BY orden, id'
+        );
+        $consulta->execute([':id' => $productoId]);
+        return $consulta->fetchAll();
+    }
+
     public function obtenerPorCategoria(string $slug): array {
         $consulta = $this->bd->prepare(
             'SELECT p.*, c.nombre AS categoria_nombre

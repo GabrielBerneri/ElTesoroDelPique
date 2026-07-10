@@ -45,6 +45,7 @@ class ProductoController {
         }
 
         $tituloPagina = $producto['nombre'];
+        $imagenes     = $modeloProducto->obtenerImagenes((int) $producto['id']);
 
         ob_start();
         require_once BASE_PATH . '/src/views/productos/detalle.php';

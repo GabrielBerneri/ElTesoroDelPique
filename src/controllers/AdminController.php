@@ -2,8 +2,10 @@
 
 require_once BASE_PATH . '/src/helpers/auth.php';
 require_once BASE_PATH . '/src/helpers/sanitize.php';
+require_once BASE_PATH . '/src/helpers/imagenes.php';
 require_once BASE_PATH . '/src/models/Producto.php';
 require_once BASE_PATH . '/src/models/Categoria.php';
+require_once BASE_PATH . '/src/models/Pedido.php';
 
 class AdminController {
 
@@ -44,8 +46,106 @@ class AdminController {
         $totalPedidos    = $bd->query('SELECT COUNT(*) FROM pedidos')->fetchColumn();
         $totalUsuarios   = $bd->query('SELECT COUNT(*) FROM usuarios')->fetchColumn();
 
+        $modeloPedido    = new Pedido($bd);
+        $totalVendido    = $modeloPedido->totalVendido();
+        $pedidosPendientes = $modeloPedido->contarPorEstado('pendiente');
+
         $tituloPagina = 'Panel de administración';
         require_once BASE_PATH . '/src/views/admin/dashboard.php';
+    }
+
+    // ── CATEGORÍAS ───────────────────────────────────────
+
+    public static function categorias(PDO $bd): void {
+        requiereAdmin();
+        $modelo     = new Categoria($bd);
+        $categorias = $modelo->obtenerTodasConConteo();
+
+        $exito = $_SESSION['categoria_exito'] ?? null;
+        $error = $_SESSION['categoria_error'] ?? null;
+        unset($_SESSION['categoria_exito'], $_SESSION['categoria_error']);
+
+        $tituloPagina = 'Categorías';
+        require_once BASE_PATH . '/src/views/admin/categorias/lista.php';
+    }
+
+    public static function categoriaNuevaProcesar(PDO $bd): void {
+        requiereAdmin();
+        $modelo = new Categoria($bd);
+
+        $nombre      = limpiarTexto($_POST['nombre'] ?? '');
+        $descripcion = limpiarTexto($_POST['descripcion'] ?? '');
+
+        if ($nombre === '') {
+            $_SESSION['categoria_error'] = 'El nombre no puede estar vacío.';
+            redirigir('/admin/categorias');
+        }
+
+        $slug = crearSlug($nombre);
+        if ($modelo->existeSlug($slug)) {
+            $_SESSION['categoria_error'] = 'Ya existe una categoría con ese nombre.';
+            redirigir('/admin/categorias');
+        }
+
+        $modelo->crear($nombre, $slug, $descripcion);
+        $_SESSION['categoria_exito'] = 'Categoría creada correctamente.';
+        redirigir('/admin/categorias');
+    }
+
+    public static function categoriaEliminar(PDO $bd, string $uri): void {
+        requiereAdmin();
+        $id     = (int) basename($uri);
+        $modelo = new Categoria($bd);
+
+        if ($modelo->contarProductos($id) > 0) {
+            $_SESSION['categoria_error'] = 'No se puede borrar: la categoría tiene productos asociados.';
+        } else {
+            $modelo->eliminar($id);
+            $_SESSION['categoria_exito'] = 'Categoría eliminada.';
+        }
+        redirigir('/admin/categorias');
+    }
+
+    // ── VENTAS ───────────────────────────────────────────
+
+    public static function ventas(PDO $bd): void {
+        requiereAdmin();
+        $modelo  = new Pedido($bd);
+        $pedidos = $modelo->obtenerTodos();
+
+        $exito = $_SESSION['venta_exito'] ?? null;
+        unset($_SESSION['venta_exito']);
+
+        $tituloPagina = 'Ventas';
+        require_once BASE_PATH . '/src/views/admin/ventas/lista.php';
+    }
+
+    public static function ventaDetalle(PDO $bd, string $uri): void {
+        requiereAdmin();
+        $id     = (int) basename($uri);
+        $modelo = new Pedido($bd);
+        $pedido = $modelo->obtenerPorId($id);
+
+        if (!$pedido) {
+            redirigir('/admin/ventas');
+        }
+
+        $detalle = $modelo->obtenerDetalle($id);
+
+        $tituloPagina = 'Venta #' . $id;
+        require_once BASE_PATH . '/src/views/admin/ventas/detalle.php';
+    }
+
+    public static function ventaEstadoProcesar(PDO $bd, string $uri): void {
+        requiereAdmin();
+        $id     = (int) basename($uri); // /admin/ventas/estado/{id}
+        $estado = limpiarTexto($_POST['estado'] ?? '');
+
+        $modelo = new Pedido($bd);
+        $modelo->actualizarEstado($id, $estado);
+
+        $_SESSION['venta_exito'] = 'Estado actualizado.';
+        redirigir('/admin/ventas/' . $id);
     }
 
     public static function productos(PDO $bd): void {
@@ -75,6 +175,12 @@ class AdminController {
              VALUES (:categoria_id, :nombre, :slug, :descripcion, :precio, :stock, :activo)'
         );
         $consulta->execute($datos);
+        $productoId = (int) $bd->lastInsertId();
+
+        if (!empty($_FILES['imagenes']['name'][0])) {
+            subirImagenesProducto($bd, $productoId, $_FILES['imagenes']);
+        }
+
         redirigir('/admin/productos');
     }
 
@@ -90,6 +196,7 @@ class AdminController {
 
         $modeloCategoria = new Categoria($bd);
         $categorias      = $modeloCategoria->obtenerTodas();
+        $imagenes        = $modelo->obtenerImagenes($id);
 
         $tituloPagina = 'Editar producto';
         require_once BASE_PATH . '/src/views/admin/productos/formulario.php';
@@ -108,7 +215,21 @@ class AdminController {
              WHERE id=:id'
         );
         $consulta->execute($datos);
-        redirigir('/admin/productos');
+
+        if (!empty($_FILES['imagenes']['name'][0])) {
+            subirImagenesProducto($bd, $id, $_FILES['imagenes']);
+        }
+        // Volver a fijar la imagen principal por si se subieron nuevas
+        sincronizarImagenPrincipal($bd, $id);
+
+        redirigir('/admin/productos/editar/' . $id);
+    }
+
+    public static function imagenEliminar(PDO $bd, string $uri): void {
+        requiereAdmin();
+        $imagenId   = (int) basename($uri);
+        $productoId = eliminarImagenProducto($bd, $imagenId);
+        redirigir($productoId ? '/admin/productos/editar/' . $productoId : '/admin/productos');
     }
 
     public static function perfilVista(): void {
