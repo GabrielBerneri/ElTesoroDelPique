@@ -42,6 +42,20 @@ function manejarRuta(PDO $bd): void {
         return;
     }
 
+    // Checkout
+    if (str_starts_with($uri, '/checkout')) {
+        require_once BASE_PATH . '/src/controllers/CheckoutController.php';
+        match (true) {
+            $uri === '/checkout'           && $metodo === 'GET'  => CheckoutController::vista(),
+            $uri === '/checkout/procesar'  && $metodo === 'POST' => CheckoutController::procesar(),
+            $uri === '/checkout/exito'                           => CheckoutController::exito(),
+            $uri === '/checkout/fallo'                           => CheckoutController::fallo(),
+            $uri === '/checkout/pendiente'                       => CheckoutController::pendiente(),
+            default => redirigir('/checkout'),
+        };
+        return;
+    }
+
     // Rutas del panel admin
     if (str_starts_with($uri, '/admin')) {
         require_once BASE_PATH . '/src/controllers/AdminController.php';
