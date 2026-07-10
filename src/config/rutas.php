@@ -20,6 +20,23 @@ function manejarRuta(PDO $bd): void {
         return;
     }
 
+    // Páginas estáticas
+    if ($uri === '/categorias') {
+        require_once BASE_PATH . '/src/controllers/PaginaController.php';
+        PaginaController::categorias($bd);
+        return;
+    }
+    if ($uri === '/ofertas') {
+        require_once BASE_PATH . '/src/controllers/PaginaController.php';
+        PaginaController::ofertas();
+        return;
+    }
+    if ($uri === '/contacto') {
+        require_once BASE_PATH . '/src/controllers/PaginaController.php';
+        PaginaController::contacto();
+        return;
+    }
+
     // Detalle de producto
     if (str_starts_with($uri, '/producto/')) {
         require_once BASE_PATH . '/src/controllers/ProductoController.php';

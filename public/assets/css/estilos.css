@@ -712,6 +712,53 @@ ul {
     min-width: 0;
 }
 
+/* Página de contacto */
+.pagina-contacto {
+    padding: 48px 20px 80px;
+}
+
+.contacto-tarjetas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+}
+
+.contacto-tarjeta {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    padding: 32px 40px;
+    background: var(--color-blanco);
+    border-radius: 14px;
+    box-shadow: var(--sombra-suave);
+    border: 2px solid transparent;
+    transition: all var(--transicion);
+    min-width: 220px;
+}
+
+.contacto-tarjeta:hover {
+    border-color: var(--color-acento);
+    box-shadow: var(--sombra-media);
+    transform: translateY(-3px);
+}
+
+.contacto-icono {
+    font-size: 40px;
+}
+
+.contacto-titulo {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--color-texto);
+}
+
+.contacto-dato {
+    font-size: 14px;
+    color: var(--color-texto-suave);
+}
+
 .badge-agotado {
     background-color: #666 !important;
 }
