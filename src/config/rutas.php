@@ -97,6 +97,9 @@ function manejarRuta(PDO $bd): void {
             str_starts_with($uri, '/admin/ventas/')        && $metodo === 'GET'    => AdminController::ventaDetalle($bd, $uri),
             $uri === '/admin/perfil' && $metodo === 'GET'                           => AdminController::perfilVista(),
             $uri === '/admin/perfil' && $metodo === 'POST'                          => AdminController::perfilProcesar($bd),
+            $uri === '/admin/administradores'       && $metodo === 'GET'            => AdminController::administradores($bd),
+            $uri === '/admin/administradores/nuevo' && $metodo === 'POST'           => AdminController::administradorNuevoProcesar($bd),
+            str_starts_with($uri, '/admin/administradores/eliminar')               => AdminController::administradorEliminar($bd, $uri),
             default => redirigir('/admin')
         };
         return;

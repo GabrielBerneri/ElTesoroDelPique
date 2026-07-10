@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= htmlspecialchars($tituloPagina ?? 'Admin') ?> — El Tesoro del Pique</title>
     <link rel="stylesheet" href="/assets/css/estilos.css?v=9">
-    <link rel="stylesheet" href="/assets/css/admin.css?v=2">
+    <link rel="stylesheet" href="/assets/css/admin.css?v=3">
 </head>
 <body class="admin-body">
 
@@ -30,6 +30,11 @@
         <a href="/admin/perfil" class="<?= str_contains($_SERVER['REQUEST_URI'], '/admin/perfil') ? 'activo' : '' ?>">
             👤 Mi perfil
         </a>
+        <?php if (esSuperAdmin()): ?>
+        <a href="/admin/administradores" class="<?= str_contains($_SERVER['REQUEST_URI'], '/admin/administradores') ? 'activo' : '' ?>">
+            🛡️ Administradores
+        </a>
+        <?php endif; ?>
         <a href="/" target="_blank">🌐 Ver sitio</a>
         <a href="/admin/logout" class="logout">🚪 Salir</a>
     </nav>

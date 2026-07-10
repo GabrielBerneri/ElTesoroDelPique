@@ -6,6 +6,7 @@ require_once BASE_PATH . '/src/helpers/imagenes.php';
 require_once BASE_PATH . '/src/models/Producto.php';
 require_once BASE_PATH . '/src/models/Categoria.php';
 require_once BASE_PATH . '/src/models/Pedido.php';
+require_once BASE_PATH . '/src/models/Usuario.php';
 
 class AdminController {
 
@@ -146,6 +147,68 @@ class AdminController {
 
         $_SESSION['venta_exito'] = 'Estado actualizado.';
         redirigir('/admin/ventas/' . $id);
+    }
+
+    // ── ADMINISTRADORES (solo super-admin) ───────────────
+
+    public static function administradores(PDO $bd): void {
+        requiereSuperAdmin();
+        $modelo = new Usuario($bd);
+        $admins = $modelo->obtenerAdmins();
+
+        $exito = $_SESSION['admin_exito'] ?? null;
+        $error = $_SESSION['admin_error'] ?? null;
+        unset($_SESSION['admin_exito'], $_SESSION['admin_error']);
+
+        $tituloPagina = 'Administradores';
+        require_once BASE_PATH . '/src/views/admin/administradores/lista.php';
+    }
+
+    public static function administradorNuevoProcesar(PDO $bd): void {
+        requiereSuperAdmin();
+        $modelo = new Usuario($bd);
+
+        $nombre   = limpiarTexto($_POST['nombre'] ?? '');
+        $email    = limpiarEmail($_POST['email'] ?? '');
+        $password = $_POST['password'] ?? '';
+
+        if ($nombre === '' || !$email) {
+            $_SESSION['admin_error'] = 'Completá nombre y un email válido.';
+            redirigir('/admin/administradores');
+        }
+        if (strlen($password) < 6) {
+            $_SESSION['admin_error'] = 'La contraseña debe tener al menos 6 caracteres.';
+            redirigir('/admin/administradores');
+        }
+        if ($modelo->existeEmail($email)) {
+            $_SESSION['admin_error'] = 'Ya existe un usuario con ese email.';
+            redirigir('/admin/administradores');
+        }
+
+        $modelo->crearAdmin($nombre, $email, $password);
+        $_SESSION['admin_exito'] = 'Administrador creado correctamente.';
+        redirigir('/admin/administradores');
+    }
+
+    public static function administradorEliminar(PDO $bd, string $uri): void {
+        requiereSuperAdmin();
+        $id     = (int) basename($uri);
+        $modelo = new Usuario($bd);
+        $usuario = $modelo->obtenerPorId($id);
+
+        if (!$usuario) {
+            redirigir('/admin/administradores');
+        }
+        // No permitir borrar al super-admin ni a uno mismo
+        if ($usuario['email'] === SUPER_ADMIN_EMAIL) {
+            $_SESSION['admin_error'] = 'No se puede eliminar al administrador principal.';
+        } elseif ((int) $usuario['id'] === (int) $_SESSION['admin_id']) {
+            $_SESSION['admin_error'] = 'No podés eliminar tu propia cuenta.';
+        } else {
+            $modelo->eliminar($id);
+            $_SESSION['admin_exito'] = 'Administrador eliminado.';
+        }
+        redirigir('/admin/administradores');
     }
 
     public static function productos(PDO $bd): void {
