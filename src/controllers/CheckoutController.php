@@ -5,6 +5,12 @@ require_once BASE_PATH . '/src/models/Pedido.php';
 
 class CheckoutController {
 
+    // ── Datos de pago alternativos (CAMBIAR por los reales) ──
+    const PAGO_ALIAS      = 'tesoro.pique.pesca';   // alias de la cuenta bancaria
+    const PAGO_TITULAR    = 'Martín Gómez';          // nombre del titular
+    const WHATSAPP_NUMERO = '5491100000000';          // formato: 54 9 + área + número, sin espacios ni +
+
+
     public static function vista(): void {
         $items = Carrito::obtener();
 
@@ -36,6 +42,7 @@ class CheckoutController {
         $direccion = limpiarTexto($_POST['direccion'] ?? '');
         $ciudad    = limpiarTexto($_POST['ciudad']    ?? '');
         $provincia = limpiarTexto($_POST['provincia'] ?? '');
+        $metodo    = limpiarTexto($_POST['metodo_pago'] ?? 'mercadopago');
 
         if (!$nombre || !$email) {
             redirigir('/checkout?error=datos');
@@ -84,6 +91,16 @@ class CheckoutController {
         } catch (Throwable $e) {
             error_log('Error al guardar pedido: ' . $e->getMessage());
             redirigir('/checkout?error=mp');
+        }
+
+        // Métodos de pago manuales: transferencia y efectivo
+        if ($metodo === 'transferencia' || $metodo === 'efectivo') {
+            $_SESSION['pedido_pendiente'] = [
+                'referencia' => $referencia,
+                'total'      => Carrito::totalPrecio(),
+                'nombre'     => $nombre,
+            ];
+            redirigir('/checkout/' . $metodo);
         }
 
         try {
@@ -138,6 +155,54 @@ class CheckoutController {
 
         ob_start();
         require_once BASE_PATH . '/src/views/checkout/pendiente.php';
+        $contenido = ob_get_clean();
+
+        require_once BASE_PATH . '/src/views/layouts/base.php';
+    }
+
+    public static function transferencia(): void {
+        $pendiente = $_SESSION['pedido_pendiente'] ?? null;
+        if (!$pendiente) {
+            redirigir('/');
+        }
+        Carrito::vaciar();
+
+        $referencia   = $pendiente['referencia'];
+        $total        = $pendiente['total'];
+        $alias        = self::PAGO_ALIAS;
+        $titular      = self::PAGO_TITULAR;
+
+        $mensaje = "¡Hola! Hice el pedido {$referencia} por $"
+                 . number_format($total, 0, ',', '.')
+                 . " y voy a pagar por transferencia. Te envío el comprobante.";
+        $whatsappUrl = 'https://wa.me/' . self::WHATSAPP_NUMERO . '?text=' . rawurlencode($mensaje);
+
+        $tituloPagina = 'Transferencia';
+        ob_start();
+        require_once BASE_PATH . '/src/views/checkout/transferencia.php';
+        $contenido = ob_get_clean();
+
+        require_once BASE_PATH . '/src/views/layouts/base.php';
+    }
+
+    public static function efectivo(): void {
+        $pendiente = $_SESSION['pedido_pendiente'] ?? null;
+        if (!$pendiente) {
+            redirigir('/');
+        }
+        Carrito::vaciar();
+
+        $referencia = $pendiente['referencia'];
+        $total      = $pendiente['total'];
+
+        $mensaje = "¡Hola! Hice el pedido {$referencia} por $"
+                 . number_format($total, 0, ',', '.')
+                 . " y quiero pagar en efectivo.";
+        $whatsappUrl = 'https://wa.me/' . self::WHATSAPP_NUMERO . '?text=' . rawurlencode($mensaje);
+
+        $tituloPagina = 'Pago en efectivo';
+        ob_start();
+        require_once BASE_PATH . '/src/views/checkout/efectivo.php';
         $contenido = ob_get_clean();
 
         require_once BASE_PATH . '/src/views/layouts/base.php';

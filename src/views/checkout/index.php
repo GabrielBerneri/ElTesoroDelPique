@@ -93,15 +93,49 @@
                 </div>
             </div>
 
-            <button type="submit" class="checkout-btn-pagar">
-                <img src="https://www.mercadopago.com/org-img/Manual/ManualMP/mp_icon.png"
-                     alt="MP" class="mp-icon" onerror="this.style.display='none'">
-                Pagar con MercadoPago
+            <h2 class="checkout-seccion-titulo" style="margin-top:28px">Método de pago</h2>
+
+            <div class="metodos-pago">
+                <label class="metodo-opcion">
+                    <input type="radio" name="metodo_pago" value="mercadopago" checked>
+                    <span class="metodo-contenido">
+                        <span class="metodo-icono">💳</span>
+                        <span class="metodo-texto">
+                            <strong>MercadoPago</strong>
+                            <small>Tarjeta de crédito, débito o dinero en cuenta</small>
+                        </span>
+                    </span>
+                </label>
+
+                <label class="metodo-opcion">
+                    <input type="radio" name="metodo_pago" value="transferencia">
+                    <span class="metodo-contenido">
+                        <span class="metodo-icono">🏦</span>
+                        <span class="metodo-texto">
+                            <strong>Transferencia bancaria</strong>
+                            <small>Te mostramos los datos y enviás el comprobante por WhatsApp</small>
+                        </span>
+                    </span>
+                </label>
+
+                <label class="metodo-opcion">
+                    <input type="radio" name="metodo_pago" value="efectivo">
+                    <span class="metodo-contenido">
+                        <span class="metodo-icono">💵</span>
+                        <span class="metodo-texto">
+                            <strong>Efectivo</strong>
+                            <small>Coordinás el pago por WhatsApp</small>
+                        </span>
+                    </span>
+                </label>
+            </div>
+
+            <button type="submit" class="checkout-btn-pagar" id="btn-checkout">
+                Continuar
             </button>
 
             <p class="checkout-seguridad">
-                🔒 Tu pago es procesado de forma segura por MercadoPago.
-                No almacenamos datos de tarjetas.
+                🔒 El pago con MercadoPago se procesa de forma segura. No almacenamos datos de tarjetas.
             </p>
 
         </form>

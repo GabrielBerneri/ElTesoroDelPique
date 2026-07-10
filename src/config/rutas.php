@@ -68,6 +68,8 @@ function manejarRuta(PDO $bd): void {
             $uri === '/checkout/exito'                           => CheckoutController::exito($bd),
             $uri === '/checkout/fallo'                           => CheckoutController::fallo(),
             $uri === '/checkout/pendiente'                       => CheckoutController::pendiente(),
+            $uri === '/checkout/transferencia'                   => CheckoutController::transferencia(),
+            $uri === '/checkout/efectivo'                        => CheckoutController::efectivo(),
             default => redirigir('/checkout'),
         };
         return;

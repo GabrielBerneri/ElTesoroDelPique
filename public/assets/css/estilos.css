@@ -1802,6 +1802,122 @@ ul {
     object-fit: contain;
 }
 
+/* Selector de método de pago */
+.metodos-pago {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 8px;
+}
+
+.metodo-opcion {
+    cursor: pointer;
+    display: block;
+}
+
+.metodo-opcion input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.metodo-contenido {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 16px;
+    border: 2px solid var(--color-borde);
+    border-radius: 10px;
+    transition: all var(--transicion);
+}
+
+.metodo-opcion input:checked + .metodo-contenido {
+    border-color: var(--color-acento);
+    background: rgba(200,150,12,0.06);
+    box-shadow: 0 2px 10px rgba(200,150,12,0.15);
+}
+
+.metodo-icono {
+    font-size: 26px;
+    line-height: 1;
+    flex-shrink: 0;
+}
+
+.metodo-texto {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.metodo-texto strong {
+    font-size: 15px;
+    color: var(--color-texto);
+}
+
+.metodo-texto small {
+    font-size: 12px;
+    color: var(--color-texto-suave);
+}
+
+/* Datos de transferencia */
+.datos-transferencia {
+    max-width: 420px;
+    margin: 0 auto 8px;
+    text-align: left;
+    background: var(--color-blanco);
+    border-radius: 12px;
+    box-shadow: var(--sombra-suave);
+    overflow: hidden;
+}
+
+.dato-transferencia {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    padding: 14px 20px;
+    border-bottom: 1px solid var(--color-borde);
+}
+
+.dato-transferencia:last-child {
+    border-bottom: none;
+}
+
+.dato-label {
+    font-size: 13px;
+    color: var(--color-texto-suave);
+}
+
+.dato-valor {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--color-texto);
+    text-align: right;
+}
+
+.dato-destacado {
+    color: var(--color-acento);
+    font-size: 18px;
+}
+
+/* Botón WhatsApp */
+.btn-whatsapp {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: #25D366;
+    color: #fff;
+    font-weight: 700;
+    font-size: 15px;
+    padding: 14px 28px;
+    border-radius: 10px;
+    transition: background var(--transicion);
+}
+
+.btn-whatsapp:hover {
+    background: #1da851;
+}
+
 .checkout-seguridad {
     font-size: 12px;
     color: var(--color-texto-suave);

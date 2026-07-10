@@ -132,6 +132,25 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
+    // ── CHECKOUT: texto del botón según método de pago ───
+
+    const btnCheckout = document.getElementById('btn-checkout');
+    if (btnCheckout) {
+        const textos = {
+            mercadopago:   'Pagar con MercadoPago',
+            transferencia: 'Ver datos de transferencia',
+            efectivo:      'Coordinar por WhatsApp',
+        };
+        const actualizarBtn = () => {
+            const sel = document.querySelector('input[name="metodo_pago"]:checked');
+            if (sel) btnCheckout.textContent = textos[sel.value] || 'Continuar';
+        };
+        document.querySelectorAll('input[name="metodo_pago"]').forEach(r => {
+            r.addEventListener('change', actualizarBtn);
+        });
+        actualizarBtn();
+    }
+
     // ── GALERÍA DE DETALLE (miniaturas) ──────────────────
 
     const imagenPrincipal = document.getElementById('detalle-imagen-principal');
