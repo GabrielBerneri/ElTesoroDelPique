@@ -40,6 +40,35 @@ class AdminController {
         redirigir('/admin/login');
     }
 
+    public static function probarEmail(): void {
+        requiereSuperAdmin();
+        require_once BASE_PATH . '/src/helpers/email.php';
+
+        $destino = EMAIL_ADMIN;
+        $html    = '<p>Este es un email de prueba de El Tesoro del Pique. Si lo recibís, el envío funciona.</p>';
+        $ok      = enviarEmail($destino, 'Prueba de email - El Tesoro del Pique', $html);
+
+        header('Content-Type: text/html; charset=UTF-8');
+        echo '<div style="font-family:sans-serif;max-width:520px;margin:60px auto;padding:24px;border:1px solid #ddd;border-radius:12px;">';
+        echo '<h2>Prueba de envío de email</h2>';
+        echo '<p><strong>Destino:</strong> ' . htmlspecialchars($destino) . '</p>';
+        echo '<p><strong>Remitente (From):</strong> ' . htmlspecialchars(EMAIL_FROM) . '</p>';
+        echo '<p><strong>mail() devolvió:</strong> '
+            . ($ok ? '<span style="color:green">TRUE ✅ (el servidor aceptó el mensaje)</span>'
+                   : '<span style="color:red">FALSE ❌ (el servidor rechazó el envío)</span>')
+            . '</p>';
+        echo '<hr>';
+        if ($ok) {
+            echo '<p>El servidor aceptó el mensaje. Si no te llega, revisá la carpeta de <strong>spam</strong>. '
+               . 'Si tampoco está ahí, el problema es de entrega (hace falta configurar SMTP o un dominio propio).</p>';
+        } else {
+            echo '<p>El servidor rechazó el envío: la función mail() está deshabilitada o restringida en el hosting. '
+               . 'Hay que usar SMTP.</p>';
+        }
+        echo '<p><a href="/admin">← Volver al panel</a></p>';
+        echo '</div>';
+    }
+
     public static function dashboard(PDO $bd): void {
         requiereAdmin();
 

@@ -95,6 +95,7 @@ function manejarRuta(PDO $bd): void {
             $uri === '/admin/login'  && $metodo === 'GET'  => AdminController::loginVista(),
             $uri === '/admin/login'  && $metodo === 'POST' => AdminController::loginProcesar($bd),
             $uri === '/admin/logout'                        => AdminController::logout(),
+            $uri === '/admin/probar-email'                  => AdminController::probarEmail(),
             $uri === '/admin'        || $uri === '/admin/dashboard' => AdminController::dashboard($bd),
             $uri === '/admin/productos'                     => AdminController::productos($bd),
             $uri === '/admin/productos/nuevo' && $metodo === 'GET'  => AdminController::productoNuevoVista($bd),
