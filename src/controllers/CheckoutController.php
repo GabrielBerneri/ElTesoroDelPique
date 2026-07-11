@@ -93,6 +93,28 @@ class CheckoutController {
             redirigir('/checkout?error=mp');
         }
 
+        // Avisar por email (al negocio y al cliente). Si falla, no interrumpe la compra.
+        try {
+            require_once BASE_PATH . '/src/helpers/email.php';
+            $datosEmail = [
+                'referencia' => $referencia,
+                'nombre'     => $nombre,
+                'email'      => $email,
+                'telefono'   => $telefono,
+                'direccion'  => $direccionCompleta,
+                'total'      => Carrito::totalPrecio(),
+                'metodo'     => $metodo,
+            ];
+            enviarEmail(EMAIL_ADMIN, 'Nueva orden ' . $referencia . ' - El Tesoro del Pique',
+                plantillaEmailPedido($datosEmail, $items, true));
+            if ($email) {
+                enviarEmail($email, 'Recibimos tu pedido ' . $referencia,
+                    plantillaEmailPedido($datosEmail, $items, false));
+            }
+        } catch (Throwable $e) {
+            error_log('Error al enviar email de orden: ' . $e->getMessage());
+        }
+
         // Métodos de pago manuales: transferencia y efectivo
         if ($metodo === 'transferencia' || $metodo === 'efectivo') {
             $_SESSION['pedido_pendiente'] = [
