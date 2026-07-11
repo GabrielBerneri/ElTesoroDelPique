@@ -94,6 +94,27 @@ class Pedido {
         )->execute([':ref' => $referencia]);
     }
 
+    /**
+     * Actualiza el estado y el ID de pago de MercadoPago según la referencia.
+     * Usado por el webhook. No pisa pedidos ya entregados/enviados.
+     */
+    public function registrarPagoPorReferencia(string $referencia, string $estado, ?string $mpPaymentId): void {
+        $permitidos = ['pendiente', 'pagado', 'cancelado'];
+        if (!in_array($estado, $permitidos, true)) {
+            return;
+        }
+        $this->bd->prepare(
+            "UPDATE pedidos
+             SET estado = :estado, mp_payment_id = :mp
+             WHERE referencia_externa = :ref
+               AND estado NOT IN ('enviado', 'entregado')"
+        )->execute([
+            ':estado' => $estado,
+            ':mp'     => $mpPaymentId,
+            ':ref'    => $referencia,
+        ]);
+    }
+
     public function contarPorEstado(string $estado): int {
         $stmt = $this->bd->prepare('SELECT COUNT(*) FROM pedidos WHERE estado = :estado');
         $stmt->execute([':estado' => $estado]);

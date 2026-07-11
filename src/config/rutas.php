@@ -37,6 +37,13 @@ function manejarRuta(PDO $bd): void {
         return;
     }
 
+    // Webhook de MercadoPago (notificaciones de pago, sin sesión)
+    if ($uri === '/webhook/mercadopago') {
+        require_once BASE_PATH . '/src/controllers/WebhookController.php';
+        WebhookController::mercadopago($bd);
+        return;
+    }
+
     // Detalle de producto
     if (str_starts_with($uri, '/producto/')) {
         require_once BASE_PATH . '/src/controllers/ProductoController.php';
