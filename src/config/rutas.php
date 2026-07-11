@@ -36,6 +36,11 @@ function manejarRuta(PDO $bd): void {
         PaginaController::contacto();
         return;
     }
+    if ($uri === '/seguimiento') {
+        require_once BASE_PATH . '/src/controllers/SeguimientoController.php';
+        SeguimientoController::vista($bd);
+        return;
+    }
 
     // Webhook de MercadoPago (notificaciones de pago, sin sesión)
     if ($uri === '/webhook/mercadopago') {

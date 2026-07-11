@@ -64,6 +64,23 @@ function plantillaEmailPedido(array $datos, array $items, bool $paraAdmin): stri
     $totalFmt  = '$' . number_format($datos['total'], 0, ',', '.');
     $metodoTxt = nombreMetodoPago($datos['metodo']);
 
+    // Botón de seguimiento (solo en el mail al cliente)
+    $bloqueSeguimiento = '';
+    if (!$paraAdmin) {
+        $appUrl = rtrim($_ENV['APP_URL'] ?? '', '/');
+        if ($appUrl) {
+            $urlSeguimiento = $appUrl . '/seguimiento?ref=' . urlencode($datos['referencia']);
+            $bloqueSeguimiento =
+                '<div style="text-align:center;margin:24px 0 4px;">'
+                . '<a href="' . $urlSeguimiento . '" '
+                . 'style="display:inline-block;background:' . $dorado . ';color:' . $oscuro . ';'
+                . 'font-weight:bold;font-size:14px;text-decoration:none;padding:12px 24px;border-radius:8px;">'
+                . 'Seguí el estado de tu pedido</a>'
+                . '<p style="color:#999;font-size:12px;margin:8px 0 0;">Vas a necesitar esta referencia y tu email.</p>'
+                . '</div>';
+        }
+    }
+
     // Bloque con datos del cliente (solo en el mail al negocio)
     $bloqueCliente = '';
     if ($paraAdmin) {
@@ -104,6 +121,8 @@ function plantillaEmailPedido(array $datos, array $items, bool $paraAdmin): stri
           <p style="text-align:right;font-size:18px;font-weight:bold;color:' . $oscuro . ';margin:20px 0 0;">
             Total: ' . $totalFmt . '
           </p>
+
+          ' . $bloqueSeguimiento . '
         </div>
         <div style="background:#faf6ee;padding:16px 28px;text-align:center;">
           <span style="color:#999;font-size:12px;">El Tesoro del Pique — Tienda de pesca en Argentina</span>

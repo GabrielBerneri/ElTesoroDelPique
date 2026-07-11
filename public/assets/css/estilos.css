@@ -712,6 +712,206 @@ ul {
     min-width: 0;
 }
 
+/* Página de seguimiento */
+.seguimiento {
+    padding: 48px 20px 80px;
+    max-width: 640px;
+    margin: 0 auto;
+}
+
+.seguimiento-form {
+    background: var(--color-blanco);
+    border-radius: 14px;
+    padding: 28px;
+    box-shadow: var(--sombra-suave);
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.seguimiento-form .campo {
+    margin-bottom: 14px;
+}
+
+.seguimiento-form label {
+    display: block;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--color-texto);
+    margin-bottom: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+}
+
+.seguimiento-form input {
+    width: 100%;
+    padding: 12px 14px;
+    border: 2px solid var(--color-borde);
+    border-radius: 8px;
+    font-size: 15px;
+    font-family: var(--fuente-principal);
+    color: var(--color-texto);
+    background: white;
+    transition: border-color var(--transicion);
+}
+
+.seguimiento-form input:focus {
+    outline: none;
+    border-color: var(--color-acento);
+}
+
+.seguimiento-error {
+    margin-top: 20px;
+    padding: 14px 18px;
+    background: #fef0f0;
+    border: 1px solid #f5c6c6;
+    border-radius: 10px;
+    color: #c0392b;
+    font-size: 14px;
+    font-weight: 600;
+    text-align: center;
+}
+
+.seguimiento-resultado {
+    margin-top: 24px;
+    background: var(--color-blanco);
+    border-radius: 14px;
+    padding: 28px;
+    box-shadow: var(--sombra-suave);
+}
+
+.seguimiento-cabecera {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--color-borde);
+    margin-bottom: 28px;
+}
+
+.seguimiento-etiqueta {
+    display: block;
+    font-size: 12px;
+    color: var(--color-texto-suave);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.seguimiento-ref {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--color-texto);
+}
+
+.seguimiento-fecha {
+    font-size: 13px;
+    color: var(--color-texto-suave);
+}
+
+/* Línea de tiempo */
+.timeline {
+    display: flex;
+    justify-content: space-between;
+    position: relative;
+    margin: 8px 0 32px;
+}
+
+.timeline::before {
+    content: '';
+    position: absolute;
+    top: 22px;
+    left: 10%;
+    right: 10%;
+    height: 3px;
+    background: var(--color-borde);
+    z-index: 0;
+}
+
+.timeline-paso {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    position: relative;
+    z-index: 1;
+    flex: 1;
+}
+
+.timeline-icono {
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    background: var(--color-fondo);
+    border: 3px solid var(--color-borde);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    transition: all var(--transicion);
+}
+
+.timeline-paso.completado .timeline-icono {
+    border-color: var(--color-acento);
+    background: rgba(200,150,12,0.12);
+}
+
+.timeline-paso.actual .timeline-icono {
+    background: var(--color-acento);
+    box-shadow: 0 0 0 5px rgba(200,150,12,0.2);
+}
+
+.timeline-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--color-texto-suave);
+    text-align: center;
+}
+
+.timeline-paso.completado .timeline-label {
+    color: var(--color-texto);
+    font-weight: 700;
+}
+
+.seguimiento-cancelado {
+    padding: 16px;
+    background: #fdecea;
+    border-radius: 10px;
+    color: #c0392b;
+    font-weight: 600;
+    text-align: center;
+    margin-bottom: 24px;
+}
+
+/* Ítems del seguimiento */
+.seguimiento-items {
+    border-top: 1px solid var(--color-borde);
+    padding-top: 16px;
+}
+
+.seguimiento-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    font-size: 14px;
+    color: var(--color-texto);
+}
+
+.seguimiento-item-cant {
+    color: var(--color-texto-suave);
+    font-size: 13px;
+}
+
+.seguimiento-total {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 12px;
+    padding-top: 14px;
+    border-top: 2px solid var(--color-borde);
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--color-texto);
+}
+
 /* Página de contacto */
 .pagina-contacto {
     padding: 48px 20px 80px;

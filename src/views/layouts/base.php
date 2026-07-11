@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= htmlspecialchars($tituloPagina ?? 'El Tesoro del Pique') ?> | El Tesoro del Pique</title>
-    <link rel="stylesheet" href="/assets/css/estilos.css?v=11">
+    <link rel="stylesheet" href="/assets/css/estilos.css?v=12">
 </head>
 <body>
 
@@ -121,6 +121,7 @@
         <div class="footer-col">
             <h4>Información</h4>
             <ul>
+                <li><a href="/seguimiento">Seguí tu pedido</a></li>
                 <li><a href="/nosotros">Sobre nosotros</a></li>
                 <li><a href="/envios">Envíos</a></li>
                 <li><a href="/devoluciones">Devoluciones</a></li>
