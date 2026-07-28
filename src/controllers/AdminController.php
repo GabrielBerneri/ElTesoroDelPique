@@ -245,6 +245,9 @@ class AdminController {
         $modelo   = new Producto($bd);
         $productos = $modelo->obtenerTodos();
 
+        $mensaje = $_SESSION['producto_msg'] ?? null;
+        unset($_SESSION['producto_msg']);
+
         $tituloPagina = 'Productos';
         require_once BASE_PATH . '/src/views/admin/productos/lista.php';
     }
@@ -362,8 +365,29 @@ class AdminController {
 
     public static function productoEliminar(PDO $bd, string $uri): void {
         requiereAdmin();
-        $id = (int) basename($uri);
-        $bd->prepare('DELETE FROM productos WHERE id = :id')->execute([':id' => $id]);
+        $id     = (int) basename($uri);
+        $modelo = new Producto($bd);
+
+        // Guardar rutas de imágenes para borrar los archivos físicos si el borrado prospera
+        $imagenes = $modelo->obtenerImagenes($id);
+
+        try {
+            $bd->prepare('DELETE FROM productos WHERE id = :id')->execute([':id' => $id]);
+
+            foreach ($imagenes as $img) {
+                $archivo = BASE_PATH . '/public' . $img['ruta'];
+                if (is_file($archivo)) {
+                    unlink($archivo);
+                }
+            }
+            $_SESSION['producto_msg'] = 'Producto eliminado.';
+        } catch (PDOException $e) {
+            // Tiene ventas asociadas: lo ocultamos en vez de borrarlo (conserva el historial)
+            $bd->prepare('UPDATE productos SET activo = 0 WHERE id = :id')->execute([':id' => $id]);
+            $_SESSION['producto_msg'] = 'El producto tiene ventas asociadas, así que se ocultó de la tienda '
+                . 'en lugar de borrarse (para conservar el historial de ventas).';
+        }
+
         redirigir('/admin/productos');
     }
 

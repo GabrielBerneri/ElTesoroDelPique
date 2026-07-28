@@ -5,6 +5,10 @@
     <a href="/admin/productos/nuevo" class="btn btn-primario">+ Agregar producto</a>
 </div>
 
+<?php if (!empty($mensaje)): ?>
+    <div class="alerta alerta-ok"><?= htmlspecialchars($mensaje) ?></div>
+<?php endif; ?>
+
 <div class="tabla-contenedor">
     <?php if (empty($productos)): ?>
         <p class="vacio">No hay productos cargados todavía.</p>
