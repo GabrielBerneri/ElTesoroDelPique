@@ -55,7 +55,8 @@ $iconosCategorias = [
                     <a href="/producto/<?= $producto['slug'] ?>" class="producto-imagen">
                         <?php if ($producto['imagen_principal']): ?>
                             <img src="<?= htmlspecialchars($producto['imagen_principal']) ?>"
-                                 alt="<?= htmlspecialchars($producto['nombre']) ?>">
+                                 alt="<?= htmlspecialchars($producto['nombre']) ?>"
+                                 onerror="this.onerror=null;this.outerHTML='&#127907;'">
                         <?php else: ?>
                             🎣
                         <?php endif; ?>
