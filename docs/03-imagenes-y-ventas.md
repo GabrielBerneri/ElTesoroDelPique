@@ -46,12 +46,10 @@ reales antes de mandar todo a la app. Debe verse así:
 ```apache
 RewriteEngine On
 
-# 1) Si el archivo/carpeta existe tal cual en public_html (ej: /uploads/...), servirlo directo
-RewriteCond %{REQUEST_FILENAME} -f [OR]
-RewriteCond %{REQUEST_FILENAME} -d
-RewriteRule ^ - [L]
+# 1) Servir directamente las fotos subidas (viven en public_html/uploads)
+RewriteRule ^uploads/ - [L]
 
-# 2) Si existe dentro de eltesorodelpique/public, servirlo desde ahí
+# 2) Si existe dentro de eltesorodelpique/public, servirlo desde ahí (css, js, imágenes del sitio)
 RewriteCond %{DOCUMENT_ROOT}/eltesorodelpique/public%{REQUEST_URI} -f
 RewriteRule ^(.*)$ /eltesorodelpique/public/$1 [L]
 
