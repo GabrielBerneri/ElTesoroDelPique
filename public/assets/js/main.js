@@ -53,47 +53,51 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     async function refrescarMiniCarrito() {
+        if (!miniCarrito) return;
         try {
             const res  = await fetch('/carrito/mini');
             const data = await res.json();
-            if (!data.ok || !miniCarrito) return;
+            if (!data.ok) return;
 
-            const items    = data.items;
-            const total    = data.total;
-            const miniItems = miniCarrito.querySelector('#mini-items');
-            const miniTotal = miniCarrito.querySelector('#mini-total');
-
-            if (items.length === 0) {
+            // Carrito vacío
+            if (data.items.length === 0) {
                 miniCarrito.innerHTML = `
                     <div class="mini-vacio">
                         <span>🎣</span>
                         <p>Tu carrito está vacío</p>
                         <a href="/productos" class="mini-ver-btn">Ver productos</a>
                     </div>`;
+                twemoji.parse(miniCarrito);
                 return;
             }
 
-            if (miniItems) {
-                miniItems.innerHTML = items.map(item => `
-                    <div class="mini-item" data-id="${item.id}">
-                        <div class="mini-item-imagen">
-                            ${item.imagen
-                                ? `<img src="${item.imagen}" alt="${item.nombre}">`
-                                : '<span>🎣</span>'}
-                        </div>
-                        <div class="mini-item-info">
-                            <p class="mini-item-nombre">${item.nombre}</p>
-                            <p class="mini-item-detalle">${item.cantidad} × $${parseInt(item.precio).toLocaleString('es-AR')}</p>
-                        </div>
-                        <p class="mini-item-subtotal">$${parseInt(item.subtotal).toLocaleString('es-AR')}</p>
-                        <button class="mini-item-eliminar" data-id="${item.id}" title="Quitar">✕</button>
-                    </div>`).join('');
-                twemoji.parse(miniItems);
-            }
+            // Reconstruir toda la estructura (lista + footer), exista o no de antes
+            const filas = data.items.map(item => `
+                <div class="mini-item" data-id="${item.id}">
+                    <div class="mini-item-imagen">
+                        ${item.imagen
+                            ? `<img src="${item.imagen}" alt="${item.nombre}">`
+                            : '<span>🎣</span>'}
+                    </div>
+                    <div class="mini-item-info">
+                        <p class="mini-item-nombre">${item.nombre}</p>
+                        <p class="mini-item-detalle">${item.cantidad} × $${parseInt(item.precio).toLocaleString('es-AR')}</p>
+                    </div>
+                    <p class="mini-item-subtotal">$${parseInt(item.subtotal).toLocaleString('es-AR')}</p>
+                    <button class="mini-item-eliminar" data-id="${item.id}" title="Quitar">✕</button>
+                </div>`).join('');
 
-            if (miniTotal) {
-                miniTotal.textContent = '$' + parseInt(total).toLocaleString('es-AR');
-            }
+            miniCarrito.innerHTML = `
+                <div class="mini-items" id="mini-items">${filas}</div>
+                <div class="mini-footer">
+                    <div class="mini-total-linea">
+                        <span>Total</span>
+                        <span id="mini-total">$${parseInt(data.total).toLocaleString('es-AR')}</span>
+                    </div>
+                    <a href="/carrito" class="mini-btn-carrito">Ver carrito completo</a>
+                    <a href="/checkout" class="mini-btn-pago">Ir al pago →</a>
+                </div>`;
+            twemoji.parse(miniCarrito);
         } catch { /* silencioso */ }
     }
 
