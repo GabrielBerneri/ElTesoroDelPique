@@ -83,7 +83,7 @@
             <?php else: ?>
                 <?php foreach ($productosDestacados as $producto): ?>
                 <article class="producto-card">
-                    <div class="producto-imagen">
+                    <a href="/producto/<?= $producto['slug'] ?>" class="producto-imagen">
                         <?php if ($producto['imagen_principal']): ?>
                             <img src="<?= htmlspecialchars($producto['imagen_principal']) ?>"
                                  alt="<?= htmlspecialchars($producto['nombre']) ?>"
@@ -91,14 +91,25 @@
                         <?php else: ?>
                             🎣
                         <?php endif; ?>
-                    </div>
+                        <?php if ($producto['stock'] == 0): ?>
+                            <span class="producto-badge badge-agotado">Sin stock</span>
+                        <?php endif; ?>
+                    </a>
                     <div class="producto-info">
                         <span class="producto-categoria"><?= htmlspecialchars($producto['categoria_nombre']) ?></span>
-                        <h3 class="producto-nombre"><?= htmlspecialchars($producto['nombre']) ?></h3>
+                        <h3 class="producto-nombre">
+                            <a href="/producto/<?= $producto['slug'] ?>"><?= htmlspecialchars($producto['nombre']) ?></a>
+                        </h3>
                         <p class="producto-precio">$<?= number_format($producto['precio'], 0, ',', '.') ?></p>
                     </div>
                     <div class="producto-footer">
-                        <button class="btn-agregar">Agregar al carrito</button>
+                        <?php if ($producto['stock'] > 0): ?>
+                            <button class="btn-agregar" data-id="<?= $producto['id'] ?>">
+                                🛒 Agregar al carrito
+                            </button>
+                        <?php else: ?>
+                            <button class="btn-agregar btn-agotado" disabled>Sin stock</button>
+                        <?php endif; ?>
                     </div>
                 </article>
                 <?php endforeach; ?>
