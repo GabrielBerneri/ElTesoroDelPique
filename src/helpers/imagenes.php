@@ -10,11 +10,21 @@ const IMG_TIPOS_PERMITIDOS = [
 const IMG_MAX_BYTES = 5 * 1024 * 1024; // 5 MB
 
 /**
+ * Devuelve la ruta física (en disco) de una imagen a partir de su ruta pública.
+ * Las imágenes viven en public_html/uploads (FUERA de la carpeta del proyecto),
+ * así el deploy de Git no las borra. BASE_PATH = .../eltesorodelpique, por eso
+ * dirname(BASE_PATH) = .../public_html.
+ */
+function rutaFisicaImagen(string $rutaPublica): string {
+    return dirname(BASE_PATH) . $rutaPublica;
+}
+
+/**
  * Sube las imágenes recibidas en $_FILES y las asocia al producto.
  * Devuelve la cantidad de imágenes subidas correctamente.
  */
 function subirImagenesProducto(PDO $bd, int $productoId, array $archivos): int {
-    $dirAbsoluto = BASE_PATH . '/public' . IMG_DIR_RELATIVO;
+    $dirAbsoluto = rutaFisicaImagen(IMG_DIR_RELATIVO);
     if (!is_dir($dirAbsoluto)) {
         mkdir($dirAbsoluto, 0755, true);
     }
@@ -73,7 +83,7 @@ function eliminarImagenProducto(PDO $bd, int $imagenId): ?int {
 
     $bd->prepare('DELETE FROM producto_imagenes WHERE id = ?')->execute([$imagenId]);
 
-    $archivo = BASE_PATH . '/public' . $imagen['ruta'];
+    $archivo = rutaFisicaImagen($imagen['ruta']);
     if (is_file($archivo)) {
         unlink($archivo);
     }

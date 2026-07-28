@@ -375,7 +375,7 @@ class AdminController {
             $bd->prepare('DELETE FROM productos WHERE id = :id')->execute([':id' => $id]);
 
             foreach ($imagenes as $img) {
-                $archivo = BASE_PATH . '/public' . $img['ruta'];
+                $archivo = rutaFisicaImagen($img['ruta']);
                 if (is_file($archivo)) {
                     unlink($archivo);
                 }

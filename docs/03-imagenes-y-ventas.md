@@ -35,9 +35,29 @@ ALTER TABLE pedidos
 
 ## Paso 2 — Carpeta de imágenes en el servidor
 
-Las fotos subidas se guardan en `public/uploads/productos/`.
+Las fotos subidas se guardan en `public_html/uploads/productos/` — es decir, **FUERA** de la
+carpeta del proyecto (`eltesorodelpique/`). Esto es importante: si se guardaran dentro del
+proyecto, el deploy de Git las borraría en cada "Implementar" (porque no están en el repo).
 El código crea esa carpeta automáticamente la primera vez que subís una imagen.
-Esta carpeta **no se sube a GitHub** (está en `.gitignore`), las fotos viven solo en Hostinger.
+
+Para que las fotos se vean, el `.htaccess` de `public_html/` tiene que servir los archivos
+reales antes de mandar todo a la app. Debe verse así:
+
+```apache
+RewriteEngine On
+
+# 1) Si el archivo/carpeta existe tal cual en public_html (ej: /uploads/...), servirlo directo
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+
+# 2) Si existe dentro de eltesorodelpique/public, servirlo desde ahí
+RewriteCond %{DOCUMENT_ROOT}/eltesorodelpique/public%{REQUEST_URI} -f
+RewriteRule ^(.*)$ /eltesorodelpique/public/$1 [L]
+
+# 3) Todo lo demás va al index del proyecto
+RewriteRule ^(.*)$ /eltesorodelpique/public/index.php [QSA,L]
+```
 
 ---
 
