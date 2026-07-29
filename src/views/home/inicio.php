@@ -18,7 +18,7 @@
         </p>
         <div class="hero-botones">
             <a href="/productos" class="btn btn-primario">Ver productos</a>
-            <a href="/ofertas" class="btn btn-secundario">Ver ofertas</a>
+            <a href="/nosotros" class="btn btn-secundario">Quiénes somos</a>
         </div>
     </div>
 </section>

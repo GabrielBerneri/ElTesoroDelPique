@@ -17,11 +17,11 @@ class PaginaController {
         require_once BASE_PATH . '/src/views/layouts/base.php';
     }
 
-    public static function ofertas(): void {
-        $tituloPagina = 'Ofertas';
+    public static function nosotros(): void {
+        $tituloPagina = 'Nosotros';
 
         ob_start();
-        require_once BASE_PATH . '/src/views/paginas/ofertas.php';
+        require_once BASE_PATH . '/src/views/paginas/nosotros.php';
         $contenido = ob_get_clean();
 
         require_once BASE_PATH . '/src/views/layouts/base.php';

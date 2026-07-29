@@ -921,6 +921,52 @@ ul {
     color: var(--color-texto);
 }
 
+/* Página Nosotros */
+.nosotros {
+    padding: 56px 20px 80px;
+}
+
+.nosotros-contenido {
+    max-width: 720px;
+    margin: 0 auto;
+}
+
+.nosotros-titulo {
+    font-family: var(--fuente-titulo);
+    font-size: 34px;
+    color: var(--color-acento);
+    margin-bottom: 24px;
+    text-align: center;
+}
+
+.nosotros-contenido p {
+    font-size: 16px;
+    line-height: 1.8;
+    color: var(--color-texto);
+    margin-bottom: 18px;
+}
+
+.nosotros-bienvenida {
+    font-weight: 700;
+    font-size: 18px !important;
+    color: var(--color-secundario);
+    text-align: center;
+    margin-top: 32px !important;
+}
+
+.nosotros-lema {
+    font-family: var(--fuente-subtitulo);
+    font-weight: 900;
+    font-size: 20px !important;
+    color: var(--color-acento) !important;
+    text-align: center;
+    letter-spacing: 1px;
+    background: var(--color-primario);
+    padding: 18px 20px !important;
+    border-radius: 12px;
+    margin-top: 20px;
+}
+
 /* Página de contacto */
 .pagina-contacto {
     padding: 48px 20px 80px;

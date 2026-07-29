@@ -26,9 +26,9 @@ function manejarRuta(PDO $bd): void {
         PaginaController::categorias($bd);
         return;
     }
-    if ($uri === '/ofertas') {
+    if ($uri === '/nosotros') {
         require_once BASE_PATH . '/src/controllers/PaginaController.php';
-        PaginaController::ofertas();
+        PaginaController::nosotros();
         return;
     }
     if ($uri === '/contacto') {
