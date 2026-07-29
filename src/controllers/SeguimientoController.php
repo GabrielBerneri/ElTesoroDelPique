@@ -10,19 +10,25 @@ class SeguimientoController {
         $error      = null;
         $buscado    = false;
 
-        // Acepta el número de orden por el formulario (POST) o por link del mail (?ref=)
-        $referencia = limpiarTexto($_POST['referencia'] ?? $_GET['ref'] ?? '');
-        $refPrefill = $referencia;
+        // El número de orden puede venir por link del mail (?ref=) para prellenar el campo
+        $refPrefill = limpiarTexto($_POST['referencia'] ?? $_GET['ref'] ?? '');
 
-        if ($referencia !== '') {
-            $buscado = true;
-            $modelo  = new Pedido($bd);
-            $pedido  = $modelo->obtenerPorReferencia($referencia);
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $buscado    = true;
+            $referencia = limpiarTexto($_POST['referencia'] ?? '');
+            $email      = limpiarEmail($_POST['email'] ?? '');
 
-            if ($pedido) {
-                $detalle = $modelo->obtenerDetalle((int) $pedido['id']);
+            if ($referencia === '' || !$email) {
+                $error = 'Completá el número de orden y el email de la compra.';
             } else {
-                $error = 'No encontramos un pedido con ese número. Revisá que esté bien escrito.';
+                $modelo = new Pedido($bd);
+                $pedido = $modelo->obtenerPorReferenciaYEmail($referencia, $email);
+
+                if ($pedido) {
+                    $detalle = $modelo->obtenerDetalle((int) $pedido['id']);
+                } else {
+                    $error = 'No encontramos un pedido con esos datos. Revisá el número de orden y el email.';
+                }
             }
         }
 

@@ -24,11 +24,13 @@
         <div class="contacto-seguimiento">
             <h2 class="contacto-seguimiento-titulo">📦 Seguí tu pedido</h2>
             <p class="contacto-seguimiento-texto">
-                Ingresá el número de orden que te dimos al comprar y mirá en qué estado está.
+                Ingresá el número de orden y el email de la compra para ver en qué estado está.
             </p>
             <form method="POST" action="/seguimiento" class="contacto-seguimiento-form">
                 <input type="text" name="referencia" required
-                       placeholder="Ej: ORD-1234567890-123">
+                       placeholder="Número de orden (ej: ORD-1234567890-123)">
+                <input type="email" name="email" required
+                       placeholder="Email de la compra">
                 <button type="submit" class="btn btn-primario">Consultar</button>
             </form>
         </div>

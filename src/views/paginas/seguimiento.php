@@ -26,6 +26,11 @@ $flujoEstados = [
                        placeholder="Ej: ORD-1234567890-123"
                        value="<?= htmlspecialchars($refPrefill) ?>">
             </div>
+            <div class="campo">
+                <label for="email">Email de la compra</label>
+                <input type="email" id="email" name="email" required
+                       placeholder="tu@email.com">
+            </div>
             <button type="submit" class="btn btn-primario">Consultar estado</button>
         </form>
 
@@ -42,8 +47,9 @@ $flujoEstados = [
                     <span class="seguimiento-etiqueta">Pedido</span>
                     <span class="seguimiento-ref"><?= htmlspecialchars($pedido['referencia_externa']) ?></span>
                 </div>
-                <div class="seguimiento-fecha">
-                    <?= date('d/m/Y', strtotime($pedido['creado_en'])) ?>
+                <div style="text-align:right">
+                    <span class="seguimiento-etiqueta">Fecha de compra</span>
+                    <span class="seguimiento-fecha"><?= date('d/m/Y H:i', strtotime($pedido['creado_en'])) ?> hs</span>
                 </div>
             </div>
 
