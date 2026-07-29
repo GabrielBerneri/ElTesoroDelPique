@@ -181,13 +181,18 @@
             </div>
             <div class="checkout-linea checkout-linea-envio">
                 <span>Envío</span>
-                <span class="texto-suave">A calcular</span>
+                <span class="texto-suave">A coordinar por WhatsApp</span>
             </div>
             <div class="checkout-linea checkout-total">
                 <span>Total</span>
                 <span>$<?= number_format($total, 0, ',', '.') ?></span>
             </div>
         </div>
+
+        <p class="checkout-nota-envio">
+            🚚 El costo del envío se coordina por WhatsApp después de la compra.
+            El total de arriba es solo por los productos.
+        </p>
 
         <a href="/carrito" class="checkout-editar">← Editar carrito</a>
     </aside>

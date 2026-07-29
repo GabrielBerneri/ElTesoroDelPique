@@ -66,7 +66,7 @@
                 <span>Total</span>
                 <span id="resumen-total">$<?= number_format($total, 0, ',', '.') ?></span>
             </div>
-            <p class="resumen-envio">🚚 Envío a calcular al momento del pago</p>
+            <p class="resumen-envio">🚚 El envío se coordina por WhatsApp después de la compra</p>
 
             <a href="/checkout" class="btn btn-primario resumen-btn">
                 Proceder al pago

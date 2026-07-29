@@ -2379,6 +2379,17 @@ ul {
     color: var(--color-acento);
 }
 
+.checkout-nota-envio {
+    margin-top: 16px;
+    padding: 12px 14px;
+    background: var(--color-fondo);
+    border-radius: 8px;
+    font-size: 12.5px;
+    line-height: 1.5;
+    color: var(--color-texto-suave);
+    text-align: center;
+}
+
 /* Páginas de resultado (éxito/fallo/pendiente) */
 .resultado-pago {
     text-align: center;
