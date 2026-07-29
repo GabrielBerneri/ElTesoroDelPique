@@ -36,13 +36,14 @@ class CheckoutController {
             redirigir('/carrito');
         }
 
-        $nombre    = limpiarTexto($_POST['nombre']    ?? '');
-        $email     = limpiarEmail($_POST['email']     ?? '');
-        $telefono  = limpiarTexto($_POST['telefono']  ?? '');
-        $direccion = limpiarTexto($_POST['direccion'] ?? '');
-        $ciudad    = limpiarTexto($_POST['ciudad']    ?? '');
-        $provincia = limpiarTexto($_POST['provincia'] ?? '');
-        $metodo    = limpiarTexto($_POST['metodo_pago'] ?? 'mercadopago');
+        $nombre       = limpiarTexto($_POST['nombre']        ?? '');
+        $email        = limpiarEmail($_POST['email']         ?? '');
+        $telefono     = limpiarTexto($_POST['telefono']      ?? '');
+        $direccion    = limpiarTexto($_POST['direccion']     ?? '');
+        $localidad    = limpiarTexto($_POST['localidad']     ?? '');
+        $provincia    = limpiarTexto($_POST['provincia']     ?? '');
+        $codigoPostal = limpiarTexto($_POST['codigo_postal'] ?? '');
+        $metodo       = limpiarTexto($_POST['metodo_pago']   ?? 'mercadopago');
 
         if (!$nombre || !$email) {
             redirigir('/checkout?error=datos');
@@ -70,14 +71,16 @@ class CheckoutController {
         if ($direccion) {
             $pagador['address'] = [
                 'street_name' => $direccion,
-                'city'        => $ciudad,
+                'city'        => $localidad,
+                'zip_code'    => $codigoPostal,
             ];
         }
 
         $referencia = 'ORD-' . time() . '-' . rand(100, 999);
 
         // Guardar el pedido como "pendiente" antes de ir a MercadoPago
-        $direccionCompleta = trim($direccion . ', ' . $ciudad . ', ' . $provincia, ', ');
+        $localidadCP       = $localidad . ($codigoPostal ? ' (CP ' . $codigoPostal . ')' : '');
+        $direccionCompleta = trim($direccion . ', ' . $localidadCP . ', ' . $provincia, ', ');
         try {
             $modeloPedido = new Pedido($bd);
             $modeloPedido->crear([

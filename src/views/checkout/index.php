@@ -67,12 +67,6 @@
 
             <div class="campo-grupo">
                 <div class="campo">
-                    <label for="ciudad">Ciudad</label>
-                    <input type="text" id="ciudad" name="ciudad"
-                           placeholder="Buenos Aires"
-                           value="<?= htmlspecialchars($_POST['ciudad'] ?? '') ?>">
-                </div>
-                <div class="campo">
                     <label for="provincia">Provincia</label>
                     <select id="provincia" name="provincia">
                         <option value="">Seleccioná...</option>
@@ -91,6 +85,19 @@
                         <?php endforeach; ?>
                     </select>
                 </div>
+                <div class="campo">
+                    <label for="localidad">Localidad</label>
+                    <input type="text" id="localidad" name="localidad"
+                           placeholder="Tigre"
+                           value="<?= htmlspecialchars($_POST['localidad'] ?? '') ?>">
+                </div>
+            </div>
+
+            <div class="campo">
+                <label for="codigo_postal">Código postal</label>
+                <input type="text" id="codigo_postal" name="codigo_postal"
+                       placeholder="1648"
+                       value="<?= htmlspecialchars($_POST['codigo_postal'] ?? '') ?>">
             </div>
 
             <h2 class="checkout-seccion-titulo" style="margin-top:28px">Método de pago</h2>
