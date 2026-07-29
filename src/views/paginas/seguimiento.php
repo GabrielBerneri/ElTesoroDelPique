@@ -21,15 +21,10 @@ $flujoEstados = [
         <!-- FORMULARIO -->
         <form method="POST" action="/seguimiento" class="seguimiento-form">
             <div class="campo">
-                <label for="referencia">Referencia del pedido</label>
+                <label for="referencia">Número de orden</label>
                 <input type="text" id="referencia" name="referencia" required
                        placeholder="Ej: ORD-1234567890-123"
                        value="<?= htmlspecialchars($refPrefill) ?>">
-            </div>
-            <div class="campo">
-                <label for="email">Email de la compra</label>
-                <input type="email" id="email" name="email" required
-                       placeholder="tu@email.com">
             </div>
             <button type="submit" class="btn btn-primario">Consultar estado</button>
         </form>

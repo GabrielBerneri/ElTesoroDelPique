@@ -972,6 +972,56 @@ ul {
     padding: 48px 20px 80px;
 }
 
+/* Seguir mi pedido (en contacto) */
+.contacto-seguimiento {
+    max-width: 520px;
+    margin: 40px auto 0;
+    background: var(--color-blanco);
+    border: 1px solid var(--color-borde);
+    border-radius: 14px;
+    padding: 28px;
+    box-shadow: var(--sombra-suave);
+    text-align: center;
+}
+
+.contacto-seguimiento-titulo {
+    font-family: var(--fuente-subtitulo);
+    font-size: 20px;
+    font-weight: 900;
+    color: var(--color-primario);
+    margin-bottom: 8px;
+}
+
+.contacto-seguimiento-texto {
+    font-size: 14px;
+    color: var(--color-texto-suave);
+    margin-bottom: 18px;
+}
+
+.contacto-seguimiento-form {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.contacto-seguimiento-form input {
+    flex: 1;
+    min-width: 200px;
+    padding: 12px 14px;
+    border: 2px solid var(--color-borde);
+    border-radius: 8px;
+    font-size: 15px;
+    font-family: var(--fuente-principal);
+    color: var(--color-texto);
+    background: white;
+    transition: border-color var(--transicion);
+}
+
+.contacto-seguimiento-form input:focus {
+    outline: none;
+    border-color: var(--color-acento);
+}
+
 .contacto-tarjetas {
     display: flex;
     flex-wrap: wrap;

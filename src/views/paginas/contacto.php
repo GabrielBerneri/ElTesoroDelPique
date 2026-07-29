@@ -19,5 +19,18 @@
                 <span class="contacto-dato">@eltesorodelpique</span>
             </a>
         </div>
+
+        <!-- SEGUIR MI PEDIDO -->
+        <div class="contacto-seguimiento">
+            <h2 class="contacto-seguimiento-titulo">📦 Seguí tu pedido</h2>
+            <p class="contacto-seguimiento-texto">
+                Ingresá el número de orden que te dimos al comprar y mirá en qué estado está.
+            </p>
+            <form method="POST" action="/seguimiento" class="contacto-seguimiento-form">
+                <input type="text" name="referencia" required
+                       placeholder="Ej: ORD-1234567890-123">
+                <button type="submit" class="btn btn-primario">Consultar</button>
+            </form>
+        </div>
     </div>
 </section>

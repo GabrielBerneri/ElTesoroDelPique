@@ -67,6 +67,12 @@ class Pedido {
         return $stmt->fetch();
     }
 
+    public function obtenerPorReferencia(string $referencia): array|false {
+        $stmt = $this->bd->prepare('SELECT * FROM pedidos WHERE referencia_externa = :ref');
+        $stmt->execute([':ref' => $referencia]);
+        return $stmt->fetch();
+    }
+
     public function obtenerPorReferenciaYEmail(string $referencia, string $email): array|false {
         $stmt = $this->bd->prepare(
             'SELECT * FROM pedidos WHERE referencia_externa = :ref AND email_contacto = :email'
