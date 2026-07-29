@@ -10,6 +10,17 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    // ── BRILLO QUE SIGUE AL CURSOR (título del hero) ─────
+
+    const heroTitulo = document.querySelector('.hero-titulo');
+    if (heroTitulo) {
+        heroTitulo.addEventListener('mousemove', (e) => {
+            const r = heroTitulo.getBoundingClientRect();
+            heroTitulo.style.setProperty('--mx', (e.clientX - r.left) + 'px');
+            heroTitulo.style.setProperty('--my', (e.clientY - r.top) + 'px');
+        });
+    }
+
     // ── MINI-CARRITO (header) ─────────────────────────────
 
     const btnToggle   = document.getElementById('btn-carrito-toggle');

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= htmlspecialchars($tituloPagina ?? 'El Tesoro del Pique') ?> | El Tesoro del Pique</title>
-    <link rel="stylesheet" href="/assets/css/estilos.css?v=19">
+    <link rel="stylesheet" href="/assets/css/estilos.css?v=20">
 </head>
 <body>
 
@@ -134,7 +134,7 @@
     </div>
 </footer>
 
-<script src="/assets/js/main.js?v=4"></script>
+<script src="/assets/js/main.js?v=5"></script>
 <script src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/js/twemoji.min.js" crossorigin="anonymous"></script>
 <script>twemoji.parse(document.body, { folder: 'svg', ext: '.svg' });</script>
 </body>

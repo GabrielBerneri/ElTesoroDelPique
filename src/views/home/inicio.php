@@ -8,7 +8,8 @@
 <section class="hero">
     <div class="hero-contenido">
         <p class="hero-eyebrow">🎣 Tienda de pesca en Argentina</p>
-        <h1 class="hero-titulo">
+        <h1 class="hero-titulo" data-text="Todo para tu
+próxima salida">
             Todo para tu<br>
             <span>próxima salida</span>
         </h1>

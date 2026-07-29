@@ -316,29 +316,39 @@ ul {
     margin-bottom: 20px;
     text-shadow: 0 4px 20px rgba(0,0,0,0.6);
     cursor: default;
-    transition: color 0.5s ease, text-shadow 0.5s ease;
+    position: relative;
 }
 
-.hero-titulo:hover {
-    color: #fff;
-    text-shadow:
-        0 0 12px rgba(200,150,12,0.7),
-        0 0 30px rgba(200,150,12,0.5),
-        0 0 60px rgba(200,150,12,0.35),
-        0 4px 20px rgba(0,0,0,0.6);
+/* Capa de brillo que sigue al cursor: solo se ilumina la zona del puntero */
+.hero-titulo::before {
+    content: attr(data-text);
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    white-space: pre-line;
+    text-align: center;
+    background: radial-gradient(circle 90px at var(--mx, -300px) var(--my, -300px),
+        rgba(255,236,150,1) 0%,
+        rgba(200,150,12,0.65) 38%,
+        transparent 66%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    filter: drop-shadow(0 0 8px rgba(200,150,12,0.7));
+}
+
+.hero-titulo:hover::before {
+    opacity: 1;
 }
 
 .hero-titulo span {
     color: var(--color-acento);
     text-shadow: 0 0 30px rgba(200,150,12,0.4);
-    transition: text-shadow 0.5s ease;
-}
-
-.hero-titulo:hover span {
-    text-shadow:
-        0 0 16px rgba(200,150,12,0.95),
-        0 0 40px rgba(200,150,12,0.75),
-        0 0 80px rgba(200,150,12,0.5);
 }
 
 .hero-descripcion {
