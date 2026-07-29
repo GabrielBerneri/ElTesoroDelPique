@@ -124,6 +124,6 @@ próxima salida">
     <div class="contenedor">
         <h2>📦 Enviamos a todo el país</h2>
         <p>Comprá desde cualquier provincia y recibí en la puerta de tu casa.</p>
-        <a href="/envios" class="btn btn-primario">Ver información de envíos</a>
+        <a href="/seguimiento" class="btn btn-primario">Consultá tu pedido</a>
     </div>
 </section>
