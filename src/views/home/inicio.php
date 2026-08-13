@@ -30,19 +30,21 @@ próxima salida">
     <div class="contenedor">
         <h2 class="seccion-titulo">Marcas que se sumaron</h2>
         <div class="marcas-carrusel" aria-label="Marcas disponibles">
+            <?php
+            // Cada ítem ocupa ~190px (170 de ancho + 20 de gap).
+            // Necesitamos al menos 8 ítems por mitad del track para que el loop
+            // llene el contenedor y el duplicado no sea visible.
+            $repsPorMitad = max(1, (int) ceil(8 / count($marcas)));
+            ?>
             <div class="marcas-track">
-                <?php foreach ($marcas as $marca): ?>
-                <div class="marca-item">
-                    <img src="<?= htmlspecialchars($marca['ruta']) ?>"
-                         alt="<?= htmlspecialchars($marca['nombre']) ?>">
-                </div>
-                <?php endforeach; ?>
-                <?php foreach ($marcas as $marca): /* duplicado para loop sin corte */ ?>
-                <div class="marca-item">
-                    <img src="<?= htmlspecialchars($marca['ruta']) ?>"
-                         alt="<?= htmlspecialchars($marca['nombre']) ?>">
-                </div>
-                <?php endforeach; ?>
+                <?php for ($r = 0; $r < $repsPorMitad * 2; $r++): ?>
+                    <?php foreach ($marcas as $marca): ?>
+                    <div class="marca-item">
+                        <img src="<?= htmlspecialchars($marca['ruta']) ?>"
+                             alt="<?= htmlspecialchars($marca['nombre']) ?>">
+                    </div>
+                    <?php endforeach; ?>
+                <?php endfor; ?>
             </div>
         </div>
     </div>
