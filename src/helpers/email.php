@@ -1,7 +1,7 @@
 <?php
 // Helper de envío de emails usando la función mail() nativa de PHP (sin dependencias)
 
-const EMAIL_ADMIN       = 'diego.31.05.1991@gmail.com';
+const EMAIL_ADMIN       = 'diego.31.05.1991@hotmail.com';
 const EMAIL_FROM_NOMBRE = 'El Tesoro del Pique';
 
 // El remitente se configura en el .env del servidor (EMAIL_FROM=no-reply@tudominio.com)
