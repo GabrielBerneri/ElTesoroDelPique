@@ -29,21 +29,21 @@ próxima salida">
 <section class="seccion-marcas">
     <div class="contenedor">
         <h2 class="seccion-titulo">Marcas que se sumaron</h2>
-    </div>
-    <div class="marcas-carrusel" aria-label="Marcas disponibles">
-        <div class="marcas-track">
-            <?php foreach ($marcas as $marca): ?>
-            <div class="marca-item">
-                <img src="<?= htmlspecialchars($marca['ruta']) ?>"
-                     alt="<?= htmlspecialchars($marca['nombre']) ?>">
+        <div class="marcas-carrusel" aria-label="Marcas disponibles">
+            <div class="marcas-track">
+                <?php foreach ($marcas as $marca): ?>
+                <div class="marca-item">
+                    <img src="<?= htmlspecialchars($marca['ruta']) ?>"
+                         alt="<?= htmlspecialchars($marca['nombre']) ?>">
+                </div>
+                <?php endforeach; ?>
+                <?php foreach ($marcas as $marca): /* duplicado para loop sin corte */ ?>
+                <div class="marca-item">
+                    <img src="<?= htmlspecialchars($marca['ruta']) ?>"
+                         alt="<?= htmlspecialchars($marca['nombre']) ?>">
+                </div>
+                <?php endforeach; ?>
             </div>
-            <?php endforeach; ?>
-            <?php foreach ($marcas as $marca): /* duplicado para loop sin corte */ ?>
-            <div class="marca-item">
-                <img src="<?= htmlspecialchars($marca['ruta']) ?>"
-                     alt="<?= htmlspecialchars($marca['nombre']) ?>">
-            </div>
-            <?php endforeach; ?>
         </div>
     </div>
 </section>
