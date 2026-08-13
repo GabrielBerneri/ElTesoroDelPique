@@ -7,6 +7,7 @@ require_once BASE_PATH . '/src/models/Producto.php';
 require_once BASE_PATH . '/src/models/Categoria.php';
 require_once BASE_PATH . '/src/models/Pedido.php';
 require_once BASE_PATH . '/src/models/Usuario.php';
+require_once BASE_PATH . '/src/models/Marca.php';
 
 class AdminController {
 
@@ -389,6 +390,76 @@ class AdminController {
         }
 
         redirigir('/admin/productos');
+    }
+
+    // ── MARCAS ───────────────────────────────────────────
+
+    public static function marcas(PDO $bd): void {
+        requiereAdmin();
+        $modelo = new Marca($bd);
+        $marcas = $modelo->obtenerTodas();
+        $siguienteOrden = $modelo->siguienteOrden();
+
+        $exito = $_SESSION['marca_exito'] ?? null;
+        $error = $_SESSION['marca_error'] ?? null;
+        unset($_SESSION['marca_exito'], $_SESSION['marca_error']);
+
+        $tituloPagina = 'Marcas';
+        require_once BASE_PATH . '/src/views/admin/marcas/lista.php';
+    }
+
+    public static function marcaNuevaProcesar(PDO $bd): void {
+        requiereAdmin();
+
+        $nombre = limpiarTexto($_POST['nombre'] ?? '');
+        $orden  = limpiarEntero($_POST['orden'] ?? 0);
+
+        if ($nombre === '') {
+            $_SESSION['marca_error'] = 'El nombre no puede estar vacío.';
+            redirigir('/admin/marcas');
+        }
+
+        if (empty($_FILES['logo']['name'])) {
+            $_SESSION['marca_error'] = 'Tenés que seleccionar un logo.';
+            redirigir('/admin/marcas');
+        }
+
+        $ruta = subirImagenMarca($_FILES['logo']);
+
+        if (!$ruta) {
+            $_SESSION['marca_error'] = 'No se pudo subir el logo. Verificá que sea JPG, PNG o WEBP y no supere 5 MB.';
+            redirigir('/admin/marcas');
+        }
+
+        $modelo = new Marca($bd);
+        $modelo->crear($nombre, $ruta, $orden);
+
+        $_SESSION['marca_exito'] = 'Marca agregada correctamente.';
+        redirigir('/admin/marcas');
+    }
+
+    public static function marcaEliminar(PDO $bd, string $uri): void {
+        requiereAdmin();
+        $id     = (int) basename($uri);
+        $modelo = new Marca($bd);
+        $ruta   = $modelo->eliminar($id);
+
+        if ($ruta) {
+            $archivo = rutaFisicaImagen($ruta);
+            if (is_file($archivo)) {
+                unlink($archivo);
+            }
+            $_SESSION['marca_exito'] = 'Marca eliminada.';
+        }
+        redirigir('/admin/marcas');
+    }
+
+    public static function marcaToggle(PDO $bd, string $uri): void {
+        requiereAdmin();
+        $id     = (int) basename($uri);
+        $modelo = new Marca($bd);
+        $modelo->toggleActivo($id);
+        redirigir('/admin/marcas');
     }
 
     private static function extraerDatosFormulario(): array {

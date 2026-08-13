@@ -115,6 +115,10 @@ function manejarRuta(PDO $bd): void {
             $uri === '/admin/administradores'       && $metodo === 'GET'            => AdminController::administradores($bd),
             $uri === '/admin/administradores/nuevo' && $metodo === 'POST'           => AdminController::administradorNuevoProcesar($bd),
             str_starts_with($uri, '/admin/administradores/eliminar')               => AdminController::administradorEliminar($bd, $uri),
+            $uri === '/admin/marcas'               && $metodo === 'GET'             => AdminController::marcas($bd),
+            $uri === '/admin/marcas/nueva'         && $metodo === 'POST'            => AdminController::marcaNuevaProcesar($bd),
+            str_starts_with($uri, '/admin/marcas/eliminar')                        => AdminController::marcaEliminar($bd, $uri),
+            str_starts_with($uri, '/admin/marcas/toggle')                          => AdminController::marcaToggle($bd, $uri),
             default => redirigir('/admin')
         };
         return;

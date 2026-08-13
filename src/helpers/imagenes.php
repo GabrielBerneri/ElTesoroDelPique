@@ -93,6 +93,41 @@ function eliminarImagenProducto(PDO $bd, int $imagenId): ?int {
 }
 
 /**
+ * Sube el logo de una marca y devuelve su ruta pública, o null si falló.
+ */
+function subirImagenMarca(array $archivo): ?string {
+    $dirRelativo = '/uploads/marcas';
+    $dirAbsoluto = rutaFisicaImagen($dirRelativo);
+
+    if (!is_dir($dirAbsoluto)) {
+        mkdir($dirAbsoluto, 0755, true);
+    }
+
+    if ($archivo['error'] !== UPLOAD_ERR_OK) {
+        return null;
+    }
+
+    $tmp  = $archivo['tmp_name'];
+    $tipo = mime_content_type($tmp);
+
+    if (!isset(IMG_TIPOS_PERMITIDOS[$tipo])) {
+        return null;
+    }
+    if ($archivo['size'] > IMG_MAX_BYTES) {
+        return null;
+    }
+
+    $extension = IMG_TIPOS_PERMITIDOS[$tipo];
+    $nombre    = 'marca-' . uniqid() . '.' . $extension;
+    $destino   = $dirAbsoluto . '/' . $nombre;
+
+    if (move_uploaded_file($tmp, $destino)) {
+        return $dirRelativo . '/' . $nombre;
+    }
+    return null;
+}
+
+/**
  * Deja imagen_principal apuntando a la primera imagen del producto (o vacío si no hay).
  */
 function sincronizarImagenPrincipal(PDO $bd, int $productoId): void {

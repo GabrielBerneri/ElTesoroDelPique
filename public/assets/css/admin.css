@@ -549,6 +549,71 @@
     font-size: 15px;
 }
 
+/* ── Grilla de marcas en admin ── */
+.marcas-admin-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 16px;
+    margin-top: 8px;
+}
+
+.marca-admin-card {
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: box-shadow 0.2s;
+}
+
+.marca-admin-card:hover {
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.marca-inactiva {
+    opacity: 0.55;
+}
+
+.marca-admin-imagen {
+    background: #f5f5f5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100px;
+    padding: 12px;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.marca-admin-imagen img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+
+.marca-admin-info {
+    padding: 10px 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    flex: 1;
+    font-size: 13px;
+}
+
+.marca-admin-acciones {
+    display: flex;
+    gap: 8px;
+    padding: 8px 12px 12px;
+}
+
+.marca-admin-acciones form {
+    flex: 1;
+}
+
+.marca-admin-acciones button {
+    width: 100%;
+}
+
 @media (max-width: 1024px) {
     .categorias-layout,
     .venta-detalle-grid {
