@@ -1,10 +1,12 @@
 <?php
 // Helper de envío de emails usando la función mail() nativa de PHP (sin dependencias)
 
-// A dónde llegan los avisos de nuevas órdenes (CAMBIAR por el mail del negocio si hace falta)
 const EMAIL_ADMIN       = 'diego.31.05.1991@gmail.com';
-const EMAIL_FROM        = 'no-reply@darksalmon-quail-593672.hostingersite.com';
 const EMAIL_FROM_NOMBRE = 'El Tesoro del Pique';
+
+// El remitente se configura en el .env del servidor (EMAIL_FROM=no-reply@tudominio.com)
+// Si no está definido, usa el dominio del hosting como fallback.
+define('EMAIL_FROM', $_ENV['EMAIL_FROM'] ?? 'no-reply@' . ($_SERVER['HTTP_HOST'] ?? 'eltesorodelpique.com'));
 
 /**
  * Envía un email en formato HTML. Devuelve true si mail() lo aceptó.
