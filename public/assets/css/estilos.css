@@ -1167,6 +1167,14 @@ ul {
 
 .contacto-icono {
     font-size: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.contacto-icono svg {
+    width: 52px;
+    height: 52px;
 }
 
 .contacto-titulo {
