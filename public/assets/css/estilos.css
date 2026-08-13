@@ -418,12 +418,12 @@ ul {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 170px;
-    height: 90px;
+    width: 220px;
+    height: 120px;
     background: var(--color-blanco);
     border-radius: var(--radio-borde);
     border: 1px solid var(--color-borde);
-    padding: 14px 22px;
+    padding: 16px 28px;
     transition: box-shadow var(--transicion), transform var(--transicion);
 }
 
