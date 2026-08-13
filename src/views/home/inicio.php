@@ -7,11 +7,11 @@
 <!-- HERO -->
 <section class="hero">
     <div class="hero-contenido">
-        <p class="hero-eyebrow">🎣 Tienda de pesca en Argentina</p>
-        <h1 class="hero-titulo" data-text="Todo para tu
-próxima salida">
-            Todo para tu<br>
-            <span>próxima salida</span>
+        <p class="hero-eyebrow">🎣 Artículos de pesca y camping</p>
+        <h1 class="hero-titulo" data-text="Equipate para tu
+próxima aventura">
+            Equipate para tu<br>
+            <span>próxima aventura</span>
         </h1>
         <p class="hero-descripcion">
             Cañas, reels, señuelos y accesorios para todos los estilos de pesca.
