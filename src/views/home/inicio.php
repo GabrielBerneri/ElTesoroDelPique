@@ -14,8 +14,8 @@ próxima aventura">
             <span>próxima aventura</span>
         </h1>
         <p class="hero-descripcion">
-            Cañas, reels, señuelos y accesorios para todos los estilos de pesca.
-            Enviamos a todo el país.
+            Todos los artículos de pesca y camping encontralos en un solo lugar.
+            Envíos a todo el país.
         </p>
         <div class="hero-botones">
             <a href="/productos" class="btn btn-primario">Ver productos</a>
