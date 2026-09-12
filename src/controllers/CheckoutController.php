@@ -6,9 +6,10 @@ require_once BASE_PATH . '/src/models/Pedido.php';
 class CheckoutController {
 
     // ── Datos de pago alternativos (CAMBIAR por los reales) ──
-    const PAGO_ALIAS      = 'tesoro.pique.pesca';   // alias de la cuenta bancaria
-    const PAGO_TITULAR    = 'Martín Gómez';          // nombre del titular
-    const WHATSAPP_NUMERO = '5491100000000';          // formato: 54 9 + área + número, sin espacios ni +
+    const PAGO_ALIAS      = 'tesorodelpique';
+    const PAGO_TITULAR    = 'DIEGO IVAN MONTE';
+    const PAGO_BANCO      = 'Santander';
+    const WHATSAPP_NUMERO = '5491158438800';
 
 
     public static function vista(): void {
@@ -196,6 +197,7 @@ class CheckoutController {
         $total        = $pendiente['total'];
         $alias        = self::PAGO_ALIAS;
         $titular      = self::PAGO_TITULAR;
+        $banco        = self::PAGO_BANCO;
 
         $mensaje = "¡Hola! Hice el pedido {$referencia} por $"
                  . number_format($total, 0, ',', '.')

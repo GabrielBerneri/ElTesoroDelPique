@@ -16,6 +16,10 @@
             <span class="dato-valor"><?= htmlspecialchars($titular) ?></span>
         </div>
         <div class="dato-transferencia">
+            <span class="dato-label">Banco</span>
+            <span class="dato-valor"><?= htmlspecialchars($banco) ?></span>
+        </div>
+        <div class="dato-transferencia">
             <span class="dato-label">Total a transferir</span>
             <span class="dato-valor dato-destacado">$<?= number_format($total, 0, ',', '.') ?></span>
         </div>
