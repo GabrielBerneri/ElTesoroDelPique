@@ -45,6 +45,9 @@ class CarritoController {
             (int) $producto['id'],
             $producto['nombre'],
             (float) $producto['precio'],
+            isset($producto['precio_efectivo']) && $producto['precio_efectivo'] !== null
+                ? (float) $producto['precio_efectivo']
+                : null,
             $producto['imagen_principal'],
             $producto['slug'],
             $cantidad

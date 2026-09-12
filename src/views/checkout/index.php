@@ -110,6 +110,7 @@
                         <span class="metodo-texto">
                             <strong>MercadoPago</strong>
                             <small>Tarjeta de crédito, débito o dinero en cuenta</small>
+                            <span class="metodo-precio-tag">Total: <strong>$<?= number_format($total, 0, ',', '.') ?></strong></span>
                         </span>
                     </span>
                 </label>
@@ -121,6 +122,7 @@
                         <span class="metodo-texto">
                             <strong>Transferencia bancaria</strong>
                             <small>Te mostramos los datos y enviás el comprobante por WhatsApp</small>
+                            <span class="metodo-precio-tag metodo-precio-ahorro">Total: <strong>$<?= number_format($totalEfectivo, 0, ',', '.') ?></strong><?= $totalEfectivo < $total ? ' — <span class="metodo-badge-off">10% OFF</span>' : '' ?></span>
                         </span>
                     </span>
                 </label>
@@ -132,6 +134,7 @@
                         <span class="metodo-texto">
                             <strong>Efectivo</strong>
                             <small>Coordinás el pago por WhatsApp</small>
+                            <span class="metodo-precio-tag metodo-precio-ahorro">Total: <strong>$<?= number_format($totalEfectivo, 0, ',', '.') ?></strong><?= $totalEfectivo < $total ? ' — <span class="metodo-badge-off">10% OFF</span>' : '' ?></span>
                         </span>
                     </span>
                 </label>
@@ -154,6 +157,11 @@
 
         <div class="checkout-items">
             <?php foreach ($items as $item): ?>
+            <?php
+                $subtotalMP = $item['precio'] * $item['cantidad'];
+                $precioEf   = $item['precio_efectivo'] ?? null;
+                $subtotalEf = ($precioEf !== null ? $precioEf : $item['precio']) * $item['cantidad'];
+            ?>
             <div class="checkout-item">
                 <div class="checkout-item-imagen">
                     <?php if ($item['imagen']): ?>
@@ -167,8 +175,10 @@
                     <p class="checkout-item-nombre"><?= htmlspecialchars($item['nombre']) ?></p>
                     <p class="checkout-item-cant">Cant: <?= $item['cantidad'] ?></p>
                 </div>
-                <p class="checkout-item-precio">
-                    $<?= number_format($item['precio'] * $item['cantidad'], 0, ',', '.') ?>
+                <p class="checkout-item-precio js-item-precio"
+                   data-precio-mp="<?= $subtotalMP ?>"
+                   data-precio-ef="<?= $subtotalEf ?>">
+                    $<?= number_format($subtotalMP, 0, ',', '.') ?>
                 </p>
             </div>
             <?php endforeach; ?>
@@ -177,17 +187,58 @@
         <div class="checkout-totales">
             <div class="checkout-linea">
                 <span>Subtotal</span>
-                <span>$<?= number_format($total, 0, ',', '.') ?></span>
+                <span id="js-subtotal">$<?= number_format($total, 0, ',', '.') ?></span>
             </div>
             <div class="checkout-linea checkout-linea-envio">
                 <span>Envío</span>
                 <span class="texto-suave">A coordinar por WhatsApp</span>
             </div>
+            <?php if ($totalEfectivo < $total): ?>
+            <div id="js-descuento-badge" class="checkout-descuento-badge" style="display:none">
+                ✅ Precio especial por efectivo / transferencia
+            </div>
+            <?php endif; ?>
             <div class="checkout-linea checkout-total">
                 <span>Total</span>
-                <span>$<?= number_format($total, 0, ',', '.') ?></span>
+                <span id="js-total">$<?= number_format($total, 0, ',', '.') ?></span>
             </div>
         </div>
+
+        <script>
+        (function() {
+            var totalMP = <?= (int) $total ?>;
+            var totalEf = <?= (int) $totalEfectivo ?>;
+
+            function fmt(n) {
+                return '$' + n.toLocaleString('es-AR', { maximumFractionDigits: 0 });
+            }
+
+            function actualizar(metodo) {
+                var esEfectivo = metodo === 'efectivo' || metodo === 'transferencia';
+
+                document.querySelectorAll('.js-item-precio').forEach(function(el) {
+                    var p = esEfectivo ? parseFloat(el.dataset.precioEf) : parseFloat(el.dataset.precioMp);
+                    el.textContent = fmt(p);
+                });
+
+                var t = esEfectivo ? totalEf : totalMP;
+                var fmtT = fmt(t);
+                var sub = document.getElementById('js-subtotal');
+                var tot = document.getElementById('js-total');
+                var badge = document.getElementById('js-descuento-badge');
+                if (sub) sub.textContent = fmtT;
+                if (tot) tot.textContent = fmtT;
+                if (badge) badge.style.display = esEfectivo ? 'block' : 'none';
+            }
+
+            document.querySelectorAll('input[name="metodo_pago"]').forEach(function(r) {
+                r.addEventListener('change', function() { actualizar(this.value); });
+            });
+
+            var checked = document.querySelector('input[name="metodo_pago"]:checked');
+            if (checked) actualizar(checked.value);
+        })();
+        </script>
 
         <p class="checkout-nota-envio">
             🚚 El costo del envío se coordina por WhatsApp después de la compra.

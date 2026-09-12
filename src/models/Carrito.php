@@ -2,7 +2,7 @@
 
 class Carrito {
 
-    public static function agregar(int $id, string $nombre, float $precio, ?string $imagen, string $slug, int $cantidad = 1): void {
+    public static function agregar(int $id, string $nombre, float $precio, ?float $precioEfectivo, ?string $imagen, string $slug, int $cantidad = 1): void {
         if (!isset($_SESSION['carrito'])) {
             $_SESSION['carrito'] = [];
         }
@@ -11,12 +11,13 @@ class Carrito {
             $_SESSION['carrito'][$id]['cantidad'] += $cantidad;
         } else {
             $_SESSION['carrito'][$id] = [
-                'id'       => $id,
-                'nombre'   => $nombre,
-                'precio'   => $precio,
-                'imagen'   => $imagen,
-                'slug'     => $slug,
-                'cantidad' => $cantidad,
+                'id'              => $id,
+                'nombre'          => $nombre,
+                'precio'          => $precio,
+                'precio_efectivo' => $precioEfectivo,
+                'imagen'          => $imagen,
+                'slug'            => $slug,
+                'cantidad'        => $cantidad,
             ];
         }
     }
@@ -51,10 +52,16 @@ class Carrito {
         return $total;
     }
 
-    public static function totalPrecio(): float {
+    public static function totalPrecio(string $metodo = 'mercadopago'): float {
         $total = 0.0;
+        $esEfectivo = in_array($metodo, ['efectivo', 'transferencia'], true);
         foreach (self::obtener() as $item) {
-            $total += $item['precio'] * $item['cantidad'];
+            if ($esEfectivo && isset($item['precio_efectivo']) && $item['precio_efectivo'] !== null) {
+                $precio = (float) $item['precio_efectivo'];
+            } else {
+                $precio = (float) $item['precio'];
+            }
+            $total += $precio * $item['cantidad'];
         }
         return $total;
     }

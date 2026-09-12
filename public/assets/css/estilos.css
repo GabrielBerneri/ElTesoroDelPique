@@ -2455,6 +2455,55 @@ ul {
     margin-top: 4px;
 }
 
+.checkout-descuento-badge {
+    background: #ecfdf5;
+    color: #065f46;
+    border: 1px solid #6ee7b7;
+    border-radius: 8px;
+    padding: 8px 12px;
+    font-size: 13px;
+    font-weight: 600;
+    margin: 8px 0;
+    text-align: center;
+}
+
+/* Precios en opciones de pago */
+.metodo-precio-tag {
+    display: block;
+    margin-top: 4px;
+    font-size: 12.5px;
+    color: var(--color-texto-suave);
+}
+
+.metodo-precio-ahorro .metodo-badge-off {
+    background: #166534;
+    color: #fff;
+    border-radius: 4px;
+    padding: 1px 5px;
+    font-size: 11px;
+    font-weight: 700;
+    margin-left: 4px;
+}
+
+/* Campo info extra en formulario admin */
+.campo-ayuda-inline {
+    font-size: 11px;
+    color: var(--color-texto-suave);
+    font-weight: 400;
+    display: block;
+}
+
+.campo-info-precios .campo-ayuda {
+    margin-top: 26px;
+    padding: 10px 12px;
+    background: #fffbeb;
+    border-left: 3px solid #f59e0b;
+    border-radius: 0 6px 6px 0;
+    font-size: 12.5px;
+    line-height: 1.5;
+    color: #92400e;
+}
+
 .checkout-editar {
     display: block;
     margin-top: 16px;

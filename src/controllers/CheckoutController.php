@@ -19,9 +19,10 @@ class CheckoutController {
             redirigir('/carrito');
         }
 
-        $total        = Carrito::totalPrecio();
-        $tituloPagina = 'Checkout';
-        $error        = limpiarTexto($_GET['error'] ?? '');
+        $total           = Carrito::totalPrecio('mercadopago');
+        $totalEfectivo   = Carrito::totalPrecio('efectivo');
+        $tituloPagina    = 'Checkout';
+        $error           = limpiarTexto($_GET['error'] ?? '');
 
         ob_start();
         require_once BASE_PATH . '/src/views/checkout/index.php';
@@ -45,12 +46,13 @@ class CheckoutController {
         $provincia    = limpiarTexto($_POST['provincia']     ?? '');
         $codigoPostal = limpiarTexto($_POST['codigo_postal'] ?? '');
         $metodo       = limpiarTexto($_POST['metodo_pago']   ?? 'mercadopago');
+        $totalFinal   = Carrito::totalPrecio($metodo);
 
         if (!$nombre || !$email) {
             redirigir('/checkout?error=datos');
         }
 
-        // Armar ítems para MercadoPago
+        // Armar ítems para MercadoPago (siempre usa precio MP)
         $mpItems = [];
         foreach ($items as $item) {
             $mpItems[] = [
@@ -88,7 +90,7 @@ class CheckoutController {
                 'email'      => $email,
                 'nombre'     => $nombre,
                 'telefono'   => $telefono,
-                'total'      => Carrito::totalPrecio(),
+                'total'      => $totalFinal,
                 'referencia' => $referencia,
                 'direccion'  => $direccionCompleta,
             ], $items);
@@ -106,7 +108,7 @@ class CheckoutController {
                 'email'      => $email,
                 'telefono'   => $telefono,
                 'direccion'  => $direccionCompleta,
-                'total'      => Carrito::totalPrecio(),
+                'total'      => $totalFinal,
                 'metodo'     => $metodo,
             ];
             enviarEmail(EMAIL_ADMIN, 'Nueva orden ' . $referencia . ' - El Tesoro del Pique',
@@ -123,7 +125,7 @@ class CheckoutController {
         if ($metodo === 'transferencia' || $metodo === 'efectivo') {
             $_SESSION['pedido_pendiente'] = [
                 'referencia' => $referencia,
-                'total'      => Carrito::totalPrecio(),
+                'total'      => $totalFinal,
                 'nombre'     => $nombre,
             ];
             redirigir('/checkout/' . $metodo);
