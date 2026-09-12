@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= htmlspecialchars($tituloPagina ?? 'El Tesoro del Pique') ?> | El Tesoro del Pique</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎣</text></svg>">
-    <link rel="stylesheet" href="/assets/css/estilos.css?v=27">
+    <link rel="stylesheet" href="/assets/css/estilos.css?v=28">
 </head>
 <body>
 
@@ -97,6 +97,13 @@
 
     </div>
 </header>
+
+<!-- BURBUJA DESCUENTO FLOTANTE -->
+<div class="burbuja-descuento">
+    <span class="burbuja-pct">10%</span>
+    <span class="burbuja-off">OFF</span>
+    <span class="burbuja-texto">Efectivo y<br>transferencia</span>
+</div>
 
 <!-- CONTENIDO DE LA PÁGINA -->
 <main>

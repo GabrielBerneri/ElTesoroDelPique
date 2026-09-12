@@ -2558,3 +2558,59 @@ ul {
         width: 32px;
     }
 }
+
+/* =========================================
+   BURBUJA DESCUENTO FLOTANTE
+   ========================================= */
+.burbuja-descuento {
+    position: fixed;
+    bottom: 28px;
+    right: 24px;
+    z-index: 999;
+    width: 88px;
+    height: 88px;
+    border-radius: 50%;
+    background: var(--color-acento);
+    color: var(--color-primario);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    box-shadow: 0 4px 20px rgba(200,150,12,0.45);
+    cursor: default;
+    animation: burbuja-pulse 2.8s ease-in-out infinite;
+    line-height: 1.1;
+    padding: 6px;
+}
+
+.burbuja-pct {
+    font-family: var(--fuente-subtitulo);
+    font-size: 22px;
+    font-weight: 900;
+    display: block;
+}
+
+.burbuja-off {
+    font-family: var(--fuente-subtitulo);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    display: block;
+    margin-top: -2px;
+}
+
+.burbuja-texto {
+    font-size: 9px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    display: block;
+    margin-top: 3px;
+    line-height: 1.2;
+}
+
+@keyframes burbuja-pulse {
+    0%, 100% { transform: scale(1); box-shadow: 0 4px 20px rgba(200,150,12,0.45); }
+    50%       { transform: scale(1.07); box-shadow: 0 6px 28px rgba(200,150,12,0.65); }
+}
