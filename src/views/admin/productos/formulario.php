@@ -38,29 +38,15 @@
 
     <div class="campo-grupo">
         <div class="campo">
-            <label for="precio">Precio MercadoPago ($)</label>
+            <label for="precio">Precio ($)</label>
             <input type="number" id="precio" name="precio" step="0.01" min="0" required
                    value="<?= $producto['precio'] ?? '' ?>">
+            <p class="campo-ayuda">El precio para efectivo y transferencia se calcula automáticamente con 10% de descuento.</p>
         </div>
-        <div class="campo">
-            <label for="precio_efectivo">Precio efectivo / transferencia ($)
-                <span class="campo-ayuda-inline">Opcional — dejá vacío si usás el mismo precio</span>
-            </label>
-            <input type="number" id="precio_efectivo" name="precio_efectivo" step="0.01" min="0"
-                   value="<?= $producto['precio_efectivo'] ?? '' ?>">
-        </div>
-    </div>
-
-    <div class="campo-grupo">
         <div class="campo">
             <label for="stock">Stock</label>
             <input type="number" id="stock" name="stock" min="0" required
                    value="<?= $producto['stock'] ?? 0 ?>">
-        </div>
-        <div class="campo campo-info-precios">
-            <p class="campo-ayuda">
-                💡 Si ponés precio para efectivo/transferencia, el cliente verá ambos precios al elegir el método de pago.
-            </p>
         </div>
     </div>
 

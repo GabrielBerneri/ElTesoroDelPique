@@ -1,6 +1,5 @@
--- Ejecutar una sola vez en la base de datos de producción
-ALTER TABLE productos
-    ADD COLUMN precio_efectivo DECIMAL(10,2) NULL DEFAULT NULL
-    AFTER precio;
-
--- precio_efectivo NULL significa "sin precio diferenciado para efectivo"
+-- NOTA: Esta migración ya no es necesaria.
+-- El descuento del 10% para efectivo/transferencia se calcula automáticamente
+-- en el código (Carrito::totalPrecio) sin necesidad de columna extra en la BD.
+-- Si se ejecutó previamente el ALTER TABLE, la columna precio_efectivo puede
+-- eliminarse o dejarse sin uso: no afecta el funcionamiento.

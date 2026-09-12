@@ -159,8 +159,7 @@
             <?php foreach ($items as $item): ?>
             <?php
                 $subtotalMP = $item['precio'] * $item['cantidad'];
-                $precioEf   = $item['precio_efectivo'] ?? null;
-                $subtotalEf = ($precioEf !== null ? $precioEf : $item['precio']) * $item['cantidad'];
+                $subtotalEf = $item['precio'] * 0.90 * $item['cantidad'];
             ?>
             <div class="checkout-item">
                 <div class="checkout-item-imagen">

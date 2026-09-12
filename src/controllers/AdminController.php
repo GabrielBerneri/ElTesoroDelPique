@@ -267,8 +267,8 @@ class AdminController {
         $datos = self::extraerDatosFormulario();
 
         $consulta = $bd->prepare(
-            'INSERT INTO productos (categoria_id, nombre, slug, descripcion, precio, precio_efectivo, stock, activo)
-             VALUES (:categoria_id, :nombre, :slug, :descripcion, :precio, :precio_efectivo, :stock, :activo)'
+            'INSERT INTO productos (categoria_id, nombre, slug, descripcion, precio, stock, activo)
+             VALUES (:categoria_id, :nombre, :slug, :descripcion, :precio, :stock, :activo)'
         );
         $consulta->execute($datos);
         $productoId = (int) $bd->lastInsertId();
@@ -307,8 +307,7 @@ class AdminController {
         $consulta = $bd->prepare(
             'UPDATE productos
              SET categoria_id=:categoria_id, nombre=:nombre, slug=:slug,
-                 descripcion=:descripcion, precio=:precio, precio_efectivo=:precio_efectivo,
-                 stock=:stock, activo=:activo
+                 descripcion=:descripcion, precio=:precio, stock=:stock, activo=:activo
              WHERE id=:id'
         );
         $consulta->execute($datos);
@@ -464,17 +463,15 @@ class AdminController {
     }
 
     private static function extraerDatosFormulario(): array {
-        $nombre        = limpiarTexto($_POST['nombre'] ?? '');
-        $precioEfInput = trim($_POST['precio_efectivo'] ?? '');
+        $nombre = limpiarTexto($_POST['nombre'] ?? '');
         return [
-            ':categoria_id'    => limpiarEntero($_POST['categoria_id'] ?? 0),
-            ':nombre'          => $nombre,
-            ':slug'            => crearSlug($nombre),
-            ':descripcion'     => limpiarTexto($_POST['descripcion'] ?? ''),
-            ':precio'          => (float) ($_POST['precio'] ?? 0),
-            ':precio_efectivo' => $precioEfInput !== '' ? (float) $precioEfInput : null,
-            ':stock'           => limpiarEntero($_POST['stock'] ?? 0),
-            ':activo'          => isset($_POST['activo']) ? 1 : 0,
+            ':categoria_id' => limpiarEntero($_POST['categoria_id'] ?? 0),
+            ':nombre'       => $nombre,
+            ':slug'         => crearSlug($nombre),
+            ':descripcion'  => limpiarTexto($_POST['descripcion'] ?? ''),
+            ':precio'       => (float) ($_POST['precio'] ?? 0),
+            ':stock'        => limpiarEntero($_POST['stock'] ?? 0),
+            ':activo'       => isset($_POST['activo']) ? 1 : 0,
         ];
     }
 }
