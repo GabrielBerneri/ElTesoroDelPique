@@ -2616,50 +2616,92 @@ ul {
     bottom: 28px;
     right: 24px;
     z-index: 999;
-    width: 88px;
-    height: 88px;
+    width: 104px;
+    height: 104px;
     border-radius: 50%;
-    background: var(--color-acento);
-    color: var(--color-primario);
+    background: linear-gradient(145deg, #f7ce45 0%, #d4920f 52%, #b3700a 100%);
+    color: #fff;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     text-align: center;
-    box-shadow: 0 4px 20px rgba(200,150,12,0.45);
     cursor: default;
-    animation: burbuja-pulse 2.8s ease-in-out infinite;
-    line-height: 1.1;
-    padding: 6px;
+    text-shadow: 0 1px 4px rgba(0,0,0,0.28);
+    animation: burbuja-float 3.4s ease-in-out infinite;
+    box-shadow:
+        0 0 0 3px rgba(255,255,255,0.32),
+        0 0 0 8px rgba(212,146,15,0.22),
+        0 12px 40px rgba(140,80,0,0.52),
+        0 4px 12px rgba(0,0,0,0.22);
+}
+
+.burbuja-descuento::before {
+    content: '';
+    position: absolute;
+    inset: -12px;
+    border-radius: 50%;
+    border: 1.5px dashed rgba(255,255,255,0.42);
+    animation: burbuja-ring 12s linear infinite;
+    pointer-events: none;
 }
 
 .burbuja-pct {
-    font-family: var(--fuente-subtitulo);
-    font-size: 22px;
+    font-size: 34px;
     font-weight: 900;
+    line-height: 1;
     display: block;
+    letter-spacing: -1.5px;
 }
 
 .burbuja-off {
-    font-family: var(--fuente-subtitulo);
-    font-size: 13px;
-    font-weight: 700;
-    letter-spacing: 1px;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 4px;
     display: block;
-    margin-top: -2px;
+    margin-top: 1px;
+    text-transform: uppercase;
+    opacity: 0.95;
 }
 
 .burbuja-texto {
-    font-size: 9px;
+    font-size: 8px;
     font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 0.3px;
+    letter-spacing: 0.5px;
     display: block;
-    margin-top: 3px;
-    line-height: 1.2;
+    line-height: 1.45;
+    opacity: 0.88;
 }
 
-@keyframes burbuja-pulse {
-    0%, 100% { transform: scale(1); box-shadow: 0 4px 20px rgba(200,150,12,0.45); }
-    50%       { transform: scale(1.07); box-shadow: 0 6px 28px rgba(200,150,12,0.65); }
+.burbuja-texto::before {
+    content: '';
+    display: block;
+    width: 46px;
+    height: 1px;
+    background: rgba(255,255,255,0.42);
+    margin: 5px auto 5px;
+}
+
+@keyframes burbuja-float {
+    0%, 100% { transform: translateY(0)    rotate(0deg); }
+    30%       { transform: translateY(-6px) rotate(-1deg); }
+    70%       { transform: translateY(-3px) rotate(1deg); }
+}
+
+@keyframes burbuja-ring {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
+}
+
+@media (max-width: 480px) {
+    .burbuja-descuento {
+        width: 88px;
+        height: 88px;
+        bottom: 16px;
+        right: 14px;
+    }
+    .burbuja-pct  { font-size: 28px; }
+    .burbuja-off  { font-size: 9.5px; letter-spacing: 3px; }
+    .burbuja-texto { font-size: 7px; }
 }
